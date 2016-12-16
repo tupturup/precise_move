@@ -1,0 +1,27 @@
+
+@app.route("/index", methods=['POST', 'GET'])
+def index():
+    ser = serial.Serial(port='COM2', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=3)
+    if ser.isOpen():
+        if request.form['submit']:
+            c = request.form['command']
+            ser.write(c)
+            #ser.write('XJ500,-500,0\r')
+            out = ser.read(20)
+            return render_template('output.html', name = out)
+            #return  redirect(url_for('__main__'))
+    else:
+        return render_template('index.html')
+
+
+_______________________________________
+
+@app.route('/add_numbers', methods=['POST', 'GET'])
+def add_numbers():
+    a = request.args.get('a', 0, type=int)
+    b = request.args.get('b', 0, type=int)
+    return jsonify(result=a + b)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
