@@ -1,0 +1,17 @@
+import numpy as np
+
+def solution(N, A):
+    c = [0]*N
+
+    for item in A:
+        if item <= N:
+            c[item-1] += 1
+        else:
+
+            for i in xrange (0, N):
+                c[i] = max(c)
+
+    return c
+    pass
+
+print solution(5, [3, 4, 4, 6, 1, 4, 4])

@@ -7,7 +7,8 @@ $(function() {
 			{
 				x: $('input[name="x"]').val(),
 				y: $('input[name="y"]').val(),
-				z: $('input[name="z"]').val()
+				z: $('input[name="z"]').val(),
+				t: $('input [name="t"]').val()
 			},
 			//success - A callback function that is executed if the request succeeds.
 			function(data) {

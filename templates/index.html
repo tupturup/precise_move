@@ -38,18 +38,13 @@
 
         <!-- navigation  buttons -->
         <div class="container-fluid" style="margin: 15pt">
-          <button type="button" class="btn btn-default btn-lg" style="border:none">
+<!--      <button type="button" class="btn btn-default btn-lg" style="border:none">
             <span class="glyphicon glyphicon-home" aria-hidden="true"> Home </span>
-          </button>
-          <button type="button" class="btn btn-default btn-lg" style="border:none">
-            <span class="glyphicon glyphicon-th-list" aria-hidden="true"> Targets</span>
-          </button>
-          <button type="button" class="btn btn-default btn-lg" style="border:none">
-            <span class="glyphicon glyphicon-cog" aria-hidden="true"> Settings</span>
-          </button>
-          <button type="button" class="btn btn-default btn-lg" style="border:none;">
-            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"> Help</span>
-          </button>
+          </button> -->
+          <span><a class="btn btn-lg btn-default glyphicon glyphicon-home" style="border:none" href="/" role="button">Home</a></span>
+          <span><a class="btn btn-lg btn-default glyphicon glyphicon-th-list" style="border:none" href="/targets" role="button">Targets</a></span>
+          <span><a class="btn btn-lg btn-default glyphicon  glyphicon-cog" style="border:none" href="#" role="button">Settings</a></span>
+          <span><a class="btn btn-lg btn-default glyphicon glyphicon-question-sign" style="border:none" href="#" role="button">help</a></span>
         </div>
       </div>
       <!-- entering the values -->
@@ -58,19 +53,19 @@
           <div class="form-group">
             <label class="col-sm-1 control-label">X</label>
             <div class="col-sm-2">
-              <input type="text" class="form-control text-center" name="x" placeholder="X">
+              <input type="text" class="form-control text-center" name="x" id="x" placeholder="X">
             </div><!-- /col-sm-9 -->
             <label class="col-sm-1 control-label">Y</label>
             <div class="col-sm-2">
-              <input type="text" class="form-control text-center" name="y" placeholder="Y">
+              <input type="text" class="form-control text-center" name="y" id="y" placeholder="Y">
             </div><!-- /col-sm-6 -->
             <label class="col-sm-1 control-label">Z</label>
             <div class="col-sm-2">
-              <input type="text" class="form-control text-center" name="z" placeholder="Z">
+              <input type="text" class="form-control text-center" name="z" id="z" placeholder="Z">
             </div><!-- /col-sm-4 -->
             <label class="col-sm-1 control-label">A</label>
             <div class="col-sm-2">
-              <input type="text" class="form-control text-center" name="a" placeholder="A">
+              <input type="text" class="form-control text-center" name="t" id="t" placeholder="T">
             </div><!-- /col-sm-2 -->
           </div> <!-- /nested form-group acting like row -->
         </form>
