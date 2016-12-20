@@ -6,21 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Precibeo</title>
-
-  <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
-  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
 </head>
 
 <body>
-  <!-- Include all necessary scripts -->
+  <!-- SCRIPTS -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script type="text/javascript" src="static/js/jquery-1.9.0.js"></script>
   <script type="text/javascript" src="static/js/jquery-3.1.1.js"></script>
@@ -30,63 +21,63 @@
   var $SCRIPT_ROOT = {{ request.script_root | tojson | safe }};
   </script>
 
-  <!-- start of the document -->
+  <!-- START OF THE DOCUMENT -->
   <div class="container-fluid">
     <h2>PRECISION</h2>
     <div class="row">
       <div class="col-xs-offset-2">
 
-        <!-- navigation  buttons -->
+        <!-- NAVIGATION BUTTONS -->
         <div class="container-fluid" style="margin: 15pt">
-<!--      <button type="button" class="btn btn-default btn-lg" style="border:none">
+        <!--<button type="button" class="btn btn-default btn-lg" style="border:none">
             <span class="glyphicon glyphicon-home" aria-hidden="true"> Home </span>
           </button> -->
           <span><a class="btn btn-lg btn-default glyphicon glyphicon-home" style="border:none" href="/" role="button">Home</a></span>
           <span><a class="btn btn-lg btn-default glyphicon glyphicon-th-list" style="border:none" href="/targets" role="button">Targets</a></span>
           <span><a class="btn btn-lg btn-default glyphicon  glyphicon-cog" style="border:none" href="#" role="button">Settings</a></span>
-          <span><a class="btn btn-lg btn-default glyphicon glyphicon-question-sign" style="border:none" href="#" role="button">help</a></span>
-        </div>
-      </div>
-      <!-- entering the values -->
+          <span><a class="btn btn-lg btn-default glyphicon glyphicon-question-sign" style="border:none" href="#" role="button">Help</a></span>
+        </div> <!-- container-fluid -->
+      </div> <!-- col-xs-offset-2 -->
+
+      <!-- ENTERING THE VALUES -->
       <div class="container-fluid">
         <form class="form-horizontal my-form" role="form">
           <div class="form-group">
+            <label class="col-sm-1 control-label">Name</label>
+            <div class="col-sm-2">
+              <input type="text" class="form-control text-center" name="t_name" id="t_name" placeholder="Name">
+            </div><!-- /col-sm-2 -->
             <label class="col-sm-1 control-label">X</label>
             <div class="col-sm-2">
               <input type="text" class="form-control text-center" name="x" id="x" placeholder="X">
-            </div><!-- /col-sm-9 -->
+            </div><!-- /col-sm-2 -->
             <label class="col-sm-1 control-label">Y</label>
             <div class="col-sm-2">
               <input type="text" class="form-control text-center" name="y" id="y" placeholder="Y">
-            </div><!-- /col-sm-6 -->
+            </div><!-- /col-sm-2 -->
             <label class="col-sm-1 control-label">Z</label>
             <div class="col-sm-2">
               <input type="text" class="form-control text-center" name="z" id="z" placeholder="Z">
-            </div><!-- /col-sm-4 -->
-            <label class="col-sm-1 control-label">A</label>
-            <div class="col-sm-2">
-              <input type="text" class="form-control text-center" name="t" id="t" placeholder="T">
             </div><!-- /col-sm-2 -->
-          </div> <!-- /nested form-group acting like row -->
+          </div> <!-- /nested form-group -->
         </form>
-      </div>
-      <!-- send button -->
+      </div><!-- container-fluid -->
+
+      <!-- SEND BUTTON -->
       <div class="container-fluid text-center" style="margin: 15pt">
         <button class="btn btn-success btn-lg" id="calculate" style="width:250pt">Send</button>
         <!--<p><a href=# id="calculate">send server side</a>-->
       </div>
-      <!-- output -->
+
+      <!-- OUTPUT -->
       <div class="container-fluid">
         <div class="col-sm-12 col-xs-12">
           <textarea class="form-control" name="result" id="result" rows="10">
           </textarea>
           <!--<span id="result"></span>-->
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-
+        </div><!--col-sm-12 col-xs-12-->
+      </div><!--container-fluid-->
+    </div> <!--row-->
+  </div> <!--container-fluid-->
 </body>
 </html>

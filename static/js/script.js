@@ -8,7 +8,7 @@ $(function() {
 				x: $('input[name="x"]').val(),
 				y: $('input[name="y"]').val(),
 				z: $('input[name="z"]').val(),
-				t: $('input [name="t"]').val()
+				t_name: $('input [name="t_name"]').val()
 			},
 			//success - A callback function that is executed if the request succeeds.
 			function(data) {
@@ -17,9 +17,7 @@ $(function() {
 			});
 			return false;
 		};
-		//$('button#calculate').on('click', submit_form);
 		$('button#calculate').click(submit_form);
-		//$('input[type=text]').on('keydown', function(e) {
 		$('input[type=text]').keydown(function(e) {
 			if (e.keyCode == 13) {
 				submit_form(e);
