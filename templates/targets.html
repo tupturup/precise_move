@@ -34,10 +34,16 @@
             <span><a class="btn btn-lg btn-default glyphicon glyphicon-question-sign" style="border:none" href="#" role="button">help</a></span>
           </div>
         </div>
-        <!-- entering the values -->
+        <!-- showing the values -->
         <div class="container-fluid">
           <div class="col-sm-12 col-xs-12">
             <textarea class="form-control" name="result" id="result" rows="10">
+              {% for t in target %}
+              {{ target.name }}
+              {{ target.value_x }}
+              {{ target.value_y }}
+              {{ target.value_z }}
+              {% endfor %}
             </textarea>
         </div>
         </div>

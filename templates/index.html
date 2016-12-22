@@ -1,71 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Precibeo</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-</head>
+{% block content %}
 
-<body>
-  <!-- SCRIPTS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script type="text/javascript" src="static/js/jquery-1.9.0.js"></script>
-  <script type="text/javascript" src="static/js/jquery-3.1.1.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="static/js/script.js"></script>
-  <script type="text/javascript">
-  var $SCRIPT_ROOT = {{ request.script_root | tojson | safe }};
-  </script>
 
-  <!-- START OF THE DOCUMENT -->
-  <div class="container-fluid">
-    <h2>PRECISION</h2>
-    <div class="row">
-      <div class="col-xs-offset-2">
-
-        <!-- NAVIGATION BUTTONS -->
-        <div class="container-fluid" style="margin: 15pt">
-        <!--<button type="button" class="btn btn-default btn-lg" style="border:none">
-            <span class="glyphicon glyphicon-home" aria-hidden="true"> Home </span>
-          </button> -->
-          <span><a class="btn btn-lg btn-default glyphicon glyphicon-home" style="border:none" href="/" role="button">Home</a></span>
-          <span><a class="btn btn-lg btn-default glyphicon glyphicon-th-list" style="border:none" href="/targets" role="button">Targets</a></span>
-          <span><a class="btn btn-lg btn-default glyphicon  glyphicon-cog" style="border:none" href="#" role="button">Settings</a></span>
-          <span><a class="btn btn-lg btn-default glyphicon glyphicon-question-sign" style="border:none" href="#" role="button">Help</a></span>
-        </div> <!-- container-fluid -->
-      </div> <!-- col-xs-offset-2 -->
 
       <!-- ENTERING THE VALUES -->
-      <div class="container-fluid">
-        <form class="form-horizontal my-form" role="form">
+<!--      <div class="container-fluid">
+        <form class="form-horizontal my-form" role="form" method="post">
           <div class="form-group">
-            <label class="col-sm-1 control-label">Name</label>
+            <label class="col-sm-1 control-label" for="name">Name</label>
             <div class="col-sm-2">
-              <input type="text" class="form-control text-center" name="t_name" id="t_name" placeholder="Name">
-            </div><!-- /col-sm-2 -->
-            <label class="col-sm-1 control-label">X</label>
+              {{ form.name }}
+              <!-- <input type="text" class="form-control text-center" name="name" id="name" placeholder="Name">-->
+<!--            </div><!-- /col-sm-2 -->
+<!--            <label class="col-sm-1 control-label">X</label>
             <div class="col-sm-2">
-              <input type="text" class="form-control text-center" name="x" id="x" placeholder="X">
-            </div><!-- /col-sm-2 -->
-            <label class="col-sm-1 control-label">Y</label>
+              {{ form.value_x }}
+              <!-- <input type="text" class="form-control text-center" name="value_x" id="value_x" placeholder="X"> -->
+<!--            </div><!-- /col-sm-2 -->
+<!--            <label class="col-sm-1 control-label">Y</label>
             <div class="col-sm-2">
-              <input type="text" class="form-control text-center" name="y" id="y" placeholder="Y">
-            </div><!-- /col-sm-2 -->
-            <label class="col-sm-1 control-label">Z</label>
+              {{ form.value_y }}
+              <!-- <input type="text" class="form-control text-center" name="value_y" id="value_y" placeholder="Y"> -->
+<!--            </div><!-- /col-sm-2 -->
+<!--            <label class="col-sm-1 control-label">Z</label>
             <div class="col-sm-2">
-              <input type="text" class="form-control text-center" name="z" id="z" placeholder="Z">
-            </div><!-- /col-sm-2 -->
-          </div> <!-- /nested form-group -->
-        </form>
-      </div><!-- container-fluid -->
+              {{ form.value_z }}
+              <!-- <input type="text" class="form-control text-center" name="value_z" id="value_z" placeholder="Z">-->
+<!--            </div><!-- /col-sm-2 -->
+<!--          </div> <!-- /nested form-group -->
+<!--        </form>
+      </div><!-- container-fluid --> -->
+
+  <div>
+    <a href="/_add_numbers" class="btn">Add a target</a>
+        {% for target in target %}
+        {% include 'targ.html' %}
+        {% endfor %}
+  </div>
+
 
       <!-- SEND BUTTON -->
       <div class="container-fluid text-center" style="margin: 15pt">
-        <button class="btn btn-success btn-lg" id="calculate" style="width:250pt">Send</button>
+        <button class="btn btn-success btn-lg" id="calculate" style="width:250pt" type="submit">{% if submit_text %}{{ submit_text }}{% else %}Add{% endif %}</button>
         <!--<p><a href=# id="calculate">send server side</a>-->
       </div>
 
@@ -77,7 +54,5 @@
           <!--<span id="result"></span>-->
         </div><!--col-sm-12 col-xs-12-->
       </div><!--container-fluid-->
-    </div> <!--row-->
-  </div> <!--container-fluid-->
-</body>
-</html>
+
+{% endblock %}

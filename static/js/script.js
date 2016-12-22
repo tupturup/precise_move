@@ -5,10 +5,10 @@ $(function() {
 			$SCRIPT_ROOT+'/_add_numbers',
 			//data - A plain object or string that is sent to the server with the request.
 			{
-				x: $('input[name="x"]').val(),
-				y: $('input[name="y"]').val(),
-				z: $('input[name="z"]').val(),
-				t_name: $('input [name="t_name"]').val()
+				value_x: $('input[name="value_x"]').val(),
+				value_y: $('input[name="value_y"]').val(),
+				value_z: $('input[name="value_z"]').val(),
+				name: $('input [name="name"]').val()
 			},
 			//success - A callback function that is executed if the request succeeds.
 			function(data) {
