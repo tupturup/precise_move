@@ -17,7 +17,7 @@ app.on('quit', function() {
 });
 
 app.on('ready', function() {
-    subpy = require('child_process').spawn('python', ['./hello.py'], {detached: true});
+    subpy = require('child_process').spawn('python', ['./main.py'], {detached: true});
 
     var openWindow = function() {
         mainWindow = new BrowserWindow({width: 800, height: 600});

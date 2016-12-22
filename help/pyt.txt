@@ -1,6 +1,42 @@
 python KOJI RADI ALI NE BAŠ LALALA
 
 
+--------------------------------------------------
+try:
+      connection = mc.connect (host = "localhost",
+                           user = "precibeo",
+                           passwd = "precibeo",
+                           db = "targetList")
+  except mc.Error as e:
+      print("Error %d: %s" % (e.args[0], e.args[1]))
+      sys.exit(1)
+
+  cursor = connection.cursor()
+
+  # there is a table named "tableName" INT(10)
+  sql_command = """ CREATE TABLE IF NOT EXISTS `tbl_target` (
+    `tgt_id` BIGINT AUTO_INCREMENT,
+    `tgt_name` INT(10),
+    `value_x` INT(10) NULL,
+    `value_y` INT(10) NULL,
+    `value_z` INT(10) NULL,
+    PRIMARY KEY (`tgt_id`));"""
+
+  cursor.execute(sql_command)
+
+  format_str = """INSERT INTO tbl_target (tgt_name, value_x, value_y, value_z)
+  VALUES ('{tgtname}', {x}, {y}, {z});"""
+  sql_command = format_str.format(tgtname=t_name, x=x, y=y, z=z)
+  #sql_command = ('INSERT INTO tbl_target (tgt_name, value_x, value_y, value_z) VALUES (?, ?, ?, ?);', (t_name, x, y, z))
+
+  print(sql_command)
+  cursor.execute(sql_command)
+  connection.commit()
+  cursor.close()
+  connection.close()
+
+  ------------------------------------------------------
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -104,7 +140,7 @@ if __name__ == "__main__":
     app.debug = True
     app.run()
 
---------------------------------------------
+------------------------------------------------------------------------------------------------
 
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
