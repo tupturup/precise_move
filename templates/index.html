@@ -1,58 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-
-
-      <!-- ENTERING THE VALUES -->
-<!--      <div class="container-fluid">
-        <form class="form-horizontal my-form" role="form" method="post">
-          <div class="form-group">
-            <label class="col-sm-1 control-label" for="name">Name</label>
-            <div class="col-sm-2">
-              {{ form.name }}
-              <!-- <input type="text" class="form-control text-center" name="name" id="name" placeholder="Name">-->
-<!--            </div><!-- /col-sm-2 -->
-<!--            <label class="col-sm-1 control-label">X</label>
-            <div class="col-sm-2">
-              {{ form.value_x }}
-              <!-- <input type="text" class="form-control text-center" name="value_x" id="value_x" placeholder="X"> -->
-<!--            </div><!-- /col-sm-2 -->
-<!--            <label class="col-sm-1 control-label">Y</label>
-            <div class="col-sm-2">
-              {{ form.value_y }}
-              <!-- <input type="text" class="form-control text-center" name="value_y" id="value_y" placeholder="Y"> -->
-<!--            </div><!-- /col-sm-2 -->
-<!--            <label class="col-sm-1 control-label">Z</label>
-            <div class="col-sm-2">
-              {{ form.value_z }}
-              <!-- <input type="text" class="form-control text-center" name="value_z" id="value_z" placeholder="Z">-->
-<!--            </div><!-- /col-sm-2 -->
-<!--          </div> <!-- /nested form-group -->
-<!--        </form>
-      </div><!-- container-fluid --> -->
-
-  <div>
-    <a href="/_add_numbers" class="btn">Add a target</a>
-        {% for target in target %}
-        {% include 'targ.html' %}
-        {% endfor %}
-  </div>
-
-
-      <!-- SEND BUTTON -->
-      <div class="container-fluid text-center" style="margin: 15pt">
-        <button class="btn btn-success btn-lg" id="calculate" style="width:250pt" type="submit">{% if submit_text %}{{ submit_text }}{% else %}Add{% endif %}</button>
-        <!--<p><a href=# id="calculate">send server side</a>-->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-offset-1">
+      <a class="btn btn-link btn-lg" href="/target/add" style="width:150pt;" type="submit" role="button"><i class="glyphicon glyphicon-plus">Add</i></a>
+      <div class="target">
+        <table class="table table-hover">
+          <tr>
+            <thead>
+              <td><b>Name</b></td>
+              <td><b>Axis</b></td>
+              <td></td>
+            </thead>
+            {% for target in targets %}
+            {% include 'targ.html' %}
+            {% endfor %}
+          </tr>
+        </table>
       </div>
+    </div>
+  </div>
+</div>
 
-      <!-- OUTPUT -->
-      <div class="container-fluid">
-        <div class="col-sm-12 col-xs-12">
-          <textarea class="form-control" name="result" id="result" rows="10">
-          </textarea>
-          <!--<span id="result"></span>-->
-        </div><!--col-sm-12 col-xs-12-->
-      </div><!--container-fluid-->
+<!-- SEND BUTTON -->
+<div class="container-fluid text-center" style="margin: 15pt">
+
+</div>
+<!-- OUTPUT -->
+<div class="container-fluid">
+  <div class="col-sm-12 col-xs-12">
+    <textarea class="form-control" name="result" id="result" rows="10">
+    </textarea>
+  </div><!--col-sm-12 col-xs-12-->
+</div><!--container-fluid-->
 
 {% endblock %}

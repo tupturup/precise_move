@@ -1,0 +1,47 @@
+
+    ser = serial.Serial(port='COM2', baudrate=115200,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=3)
+
+    value_x = str(request.args.get('value_x', type=int))
+    value_y = str(request.args.get('value_y', type=int))
+    value_z = str(request.args.get('value_z', type=int))
+    tgt_name = str(request.args.get('tgt_name', type=str))
+
+    sss = 'XJ'+ value_x +','+ value_y + ',' + value_z + '\r'
+    ser.write(sss)
+    out = ser.read(30)
+
+
+
+    
+
+      <!-- ENTERING THE VALUES -->
+<!--      <div class="container-fluid">
+        <form class="form-horizontal my-form" role="form" method="post">
+          <div class="form-group">
+            <label class="col-sm-1 control-label" for="name">Name</label>
+            <div class="col-sm-2">
+              {{ form.name }}
+              <!-- <input type="text" class="form-control text-center" name="name" id="name" placeholder="Name">-->
+<!--            </div><!-- /col-sm-2 -->
+<!--            <label class="col-sm-1 control-label">X</label>
+            <div class="col-sm-2">
+              {{ form.value_x }}
+              <!-- <input type="text" class="form-control text-center" name="value_x" id="value_x" placeholder="X"> -->
+<!--            </div><!-- /col-sm-2 -->
+<!--            <label class="col-sm-1 control-label">Y</label>
+            <div class="col-sm-2">
+              {{ form.value_y }}
+              <!-- <input type="text" class="form-control text-center" name="value_y" id="value_y" placeholder="Y"> -->
+<!--            </div><!-- /col-sm-2 -->
+<!--            <label class="col-sm-1 control-label">Z</label>
+            <div class="col-sm-2">
+              {{ form.value_z }}
+              <!-- <input type="text" class="form-control text-center" name="value_z" id="value_z" placeholder="Z">-->
+<!--            </div><!-- /col-sm-2 -->
+<!--          </div> <!-- /nested form-group -->
+<!--        </form>
+      </div><!-- container-fluid --> -->

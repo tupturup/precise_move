@@ -12,21 +12,21 @@ Base = declarative_base()
 class Target(Base):
     __tablename__ = 'tbl_target'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
+    tgt_id = Column(Integer, primary_key=True)
+    tgt_name = Column(String, unique=True, nullable=False)
     value_x = Column(Float)
     value_y = Column(Float)
     value_z = Column(Float)
 #    belongspaths = relationship('Path', secondary=target_path)
 
-    def __init__(self, name, value_x, value_y, value_z):
-        self.name = name
+    def __init__(self, tgt_name, value_x, value_y, value_z):
+        self.tgt_name = tgt_name
         self.value_x = value_x
         self.value_y = value_y
         self.value_z = value_z
 
     def __unicode__(self):
-        return self.name
+        return self.tgt_name
 
 #DO WE NEED PATH???
 #class Path(Base):

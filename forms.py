@@ -6,7 +6,7 @@ def get_target():
     return session.query(Target).all()
 
 class TargetForm(Form):
-    name = StringField('Name', [validators.input_required()])
+    tgt_name = StringField('Name', [validators.input_required()])
     value_x = StringField('X', [validators.input_required()])
     value_y = StringField('Y', [validators.input_required()])
     value_z = StringField('Z', [validators.input_required()])

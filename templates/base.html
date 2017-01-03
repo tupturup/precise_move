@@ -6,6 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Precibeo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
@@ -23,25 +25,24 @@
 
   <!-- START OF THE DOCUMENT -->
   <div class="container-fluid">
-    <h2>PRECISION</h2>
     <div class="row">
       <div class="col-xs-offset-2">
 
         <!-- NAVIGATION BUTTONS -->
         <div class="container-fluid" style="margin: 15pt">
-        <!--<button type="button" class="btn btn-default btn-lg" style="border:none">
-            <span class="glyphicon glyphicon-home" aria-hidden="true"> Home </span>
-          </button> -->
-          <span><a class="btn btn-lg btn-default glyphicon glyphicon-home" style="border:none" href="/" role="button">Home</a></span>
-          <span><a class="btn btn-lg btn-default glyphicon glyphicon-th-list" style="border:none" href="/targets" role="button">Targets</a></span>
-          <span><a class="btn btn-lg btn-default glyphicon  glyphicon-cog" style="border:none" href="#" role="button">Settings</a></span>
-          <span><a class="btn btn-lg btn-default glyphicon glyphicon-question-sign" style="border:none" href="#" role="button">Help</a></span>
-        </div> <!-- container-fluid -->
-      </div> <!-- col-xs-offset-2 -->
-  {% block content %}
+          <!--<button type="button" class="btn btn-default btn-lg" style="border:none">
+          <span class="glyphicon glyphicon-home" aria-hidden="true"> Home </span>
+        </button> -->
+        <span><a class="btn btn-lg btn-default glyphicon glyphicon-home" style="border:none" href="/" role="button">Home</a></span>
+        <span><a class="btn btn-lg btn-default glyphicon glyphicon-th-list" style="border:none" href="#" role="button">Targets</a></span>
+        <span><a class="btn btn-lg btn-default glyphicon  glyphicon-cog" style="border:none" href="#" role="button">Settings</a></span>
+        <span><a class="btn btn-lg btn-default glyphicon glyphicon-question-sign" style="border:none" href="#" role="button">Help</a></span>
+      </div> <!-- container-fluid -->
+    </div> <!-- col-xs-offset-2 -->
+    {% block content %}
 
-  {% endblock %}
-    </div> <!--row-->
-  </div> <!--container-fluid-->
+    {% endblock %}
+  </div> <!--row-->
+</div> <!--container-fluid-->
 </body>
 </html>
