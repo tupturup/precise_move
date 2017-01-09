@@ -4,7 +4,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-xs-offset-1">
-      <a class="btn btn-link btn-lg" href="/target/add" style="width:150pt;" type="submit" role="button"><i class="glyphicon glyphicon-plus">Add</i></a>
+      <a class="btn btn-link btn-lg" href="/add" style="width:150pt;" type="submit" role="button"><i class="glyphicon glyphicon-plus">Add</i></a>
       <div class="target">
         <table class="table table-hover">
           <tr>
@@ -30,7 +30,7 @@
 <!-- OUTPUT -->
 <div class="container-fluid">
   <div class="col-sm-12 col-xs-12">
-    <textarea class="form-control" name="result" id="result" rows="10">
+    <textarea class="form-control" name="result" id="result" rows="10"> {% if result %} {{ result }} {% endif %}
     </textarea>
   </div><!--col-sm-12 col-xs-12-->
 </div><!--container-fluid-->

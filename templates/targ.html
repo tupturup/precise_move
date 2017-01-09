@@ -1,13 +1,13 @@
 <tbody>
   <td>
-    {{ target.tgt_name }}
+    {{ target.tgt_name }} =
   </td>
   <td>
     [ X={{ target.value_x }}, Y={{ target.value_y }}, Z={{ target.value_z }} ]
   </td>
   <td>
-    <a href="/target/{{ target.tgt_id }}/run" class="btn btn-success btn-xs">RUN</a>
-    <a href="/target/{{ target.tgt_id }}/edit" class="btn btn-warning btn-xs">EDIT</a>
-    <a href="/target/{{ target.tgt_id }}/delete" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete target {{ target.name }}?');">DELETE</a>
+    <a href="/{{ target.tgt_id }}/run" class="btn btn-success btn-xs" id="run">RUN</a>
+    <a href="/{{ target.tgt_id }}/edit" class="btn btn-warning btn-xs">EDIT</a>
+    <a href="/{{ target.tgt_id }}/delete" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete target {{ target.name }}?');">DELETE</a>
   </td>
 </tbody>

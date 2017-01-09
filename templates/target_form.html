@@ -2,46 +2,62 @@
 
 {% block content %}
 
+{% if error %}
+<div class="alert">
+  <span class="closebtn">&times;</span>
+  <strong>Error!</strong> {{ error }}
+</div>
+{% endif %}
+
+
 <form method="POST" action="{{ action }}" class="form-horizontal">
-    <div class="control-group">
 
-        <label class="control-label" for="tgt_name">{{ form.tgt_name.label }}</label>
 
-        <div class="controls">
-            {{ form.tgt_name }}
-        </div>
+
+  <div class="control-group">
+
+    <label class="control-label" for="tgt_name">{{ form.tgt_name.label }}</label>
+    <div class="controls"> {{ form.tgt_name }}</div>
+
+    {% for message in form.tgt_name.errors %}
+    <div class="controls"><p><font color="red">{{ message }}</font></p></div>
+    {% endfor %}
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="value_x">{{ form.value_x.label }}</label>
+    <div class="controls"> {{ form.value_x }}</div>
+
+    {% for message in form.value_x.errors %}
+    <div class="controls"><p><font color="red">{{ message }}</font></p></div>
+    {% endfor %}
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="value_y">{{ form.value_y.label }}</label>
+    <div class="controls"> {{ form.value_y }}</div>
+
+    {% for message in form.value_y.errors %}
+    <div><p><font color="red">{{ message }}</font></p></div>
+    {% endfor %}
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="value_z">{{ form.value_z.label }}</label>
+    <div class="controls"> {{ form.value_z }}</div>
+
+    {% for message in form.value_z.errors %}
+    <div><p><font color="red">{{ message }}</font></p></div>
+    {% endfor %}
+  </div>
+
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn">{% if submit_text %}{{ submit_text }}{% else %}Add{% endif %}</button>
     </div>
-
-
-    <div class="control-group">
-      <label class="control-label" for="value_x">{{ form.value_x.label }}</label>
-
-      <div class="controls">
-          {{ form.value_x }}
-      </div>
-    </div>
-
-    <div class="control-group">
-      <label class="control-label" for="value_y">{{ form.value_y.label }}</label>
-
-      <div class="controls">
-          {{ form.value_y }}
-      </div>
-    </div>
-
-    <div class="control-group">
-      <label class="control-label" for="value_z">{{ form.value_z.label }}</label>
-
-      <div class="controls">
-          {{ form.value_z }}
-      </div>
-    </div>
-
-    <div class="control-group">
-        <div class="controls">
-            <button type="submit" class="btn">{% if submit_text %}{{ submit_text }}{% else %}Add{% endif %}</button>
-        </div>
-    </div>
+  </div>
 </form>
+
+
 
 {% endblock %}
