@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
-
 {% block content %}
+
+{% include 'modalInputForm.html' %}
+
+
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-xs-offset-1">
       <a class="btn btn-link btn-lg" href="/add" style="width:150pt;" type="submit" role="button"><i class="glyphicon glyphicon-plus">Add</i></a>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="myBtn"><i class="fa fa-plus index-button"></i></button>
       <div class="target">
         <table class="table table-hover">
           <tr>
@@ -13,9 +18,11 @@
               <td><b>Axis</b></td>
               <td></td>
             </thead>
-            {% for target in targets %}
-            {% include 'targ.html' %}
-            {% endfor %}
+            <div>
+              {% for target in targets %}
+              {% include 'targ.html' %}
+              {% endfor %}
+            </div>
           </tr>
         </table>
       </div>
@@ -25,13 +32,13 @@
 
 <!-- SEND BUTTON -->
 <div class="container-fluid text-center" style="margin: 15pt">
-
+  mouse x: <input type="text" id="mouseX"/><br />
+  mouse y: <input type="text" id="mouseY"/><br />
 </div>
 <!-- OUTPUT -->
 <div class="container-fluid">
   <div class="col-sm-12 col-xs-12">
-    <textarea class="form-control" name="result" id="result" rows="10"> {% if result %} {{ result }} {% endif %}
-    </textarea>
+    <textarea class="form-control" name="result" id="result" rows="10"> {{ result }} </textarea>
   </div><!--col-sm-12 col-xs-12-->
 </div><!--container-fluid-->
 

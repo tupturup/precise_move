@@ -112,15 +112,16 @@ def edit_target(tgt_id):
     return render_template('target_form.html', form=form, action="/%s/edit" % tgt_id, submit_text="Save")
 
 
-@app.route("/<int:tgt_id>/delete")
+@app.route("/delete/<int:tgt_id>")
 def delete_target(tgt_id):
     target = session.query(Target).get(tgt_id)
     session.delete(target)
     session.commit()
     return redirect(url_for('index'))
+    #return ("Deleted")
 
 
-@app.route("/<int:tgt_id>/run")
+@app.route("/run")
 def run_target(tgt_id):
     form = TargetForm(request.form)
     result = None
@@ -132,6 +133,7 @@ def run_target(tgt_id):
     result = ser.read(30)
 
     return redirect(url_for('index', result=result, form=form))
+    #return jsonify(result=result)
     #return render_template('index.html', result=result, form=form, action="/%s/run" % tgt_id)
 
 
