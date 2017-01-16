@@ -6,7 +6,7 @@ from time import sleep
 import os
 import sys
 import serial
-from flask import Flask, redirect, url_for, request, render_template, jsonify, flash
+from flask import Flask, redirect, url_for, request, render_template, jsonify, flash, Response
 import MySQLdb
 from flaskext.mysql import MySQL
 import sqlite3
@@ -91,7 +91,7 @@ def add_numbers():
     #return  redirect(url_for('__main__'))
 
 
-@app.route("/<int:tgt_id>/edit", methods=['GET', 'POST'])
+@app.route("/edit/<int:tgt_id>", methods=['GET', 'POST'])
 def edit_target(tgt_id):
     form = TargetForm(request.form)
     if request.method == 'GET':
@@ -121,9 +121,9 @@ def delete_target(tgt_id):
     #return ("Deleted")
 
 
-@app.route("/run")
+@app.route("/run/<int:tgt_id>", methods=['GET', 'POST'])
 def run_target(tgt_id):
-    form = TargetForm(request.form)
+    targets = session.query(Target).all()
     result = None
     target_db = session.query(Target).get(tgt_id)
 
@@ -131,10 +131,10 @@ def run_target(tgt_id):
     sss = 'XJ'+ str(int(target_db.value_x)) +','+ str(int(target_db.value_y)) + ',' + str(int(target_db.value_z)) + '\r'
     ser.write(sss)
     result = ser.read(30)
-
-    return redirect(url_for('index', result=result, form=form))
-    #return jsonify(result=result)
-    #return render_template('index.html', result=result, form=form, action="/%s/run" % tgt_id)
+    #resp = Response(response=result, status=200, mimetype="application/json")
+    #resp = Response(response=result, status=200, mimetype="text/html")
+    #return redirect(url_for('index', result=result))
+    return render_template('index.html', result=result, targets=targets)
 
 
 @app.route("/dev_ide")

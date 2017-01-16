@@ -7,8 +7,8 @@
             [ X={{ target.value_x }}, Y={{ target.value_y }}, Z={{ target.value_z }} ]
         </td>
         <td>
-            <a href="/run" class="btn btn-success btn-xs" id="run">RUN</a>
-            <a href="/{{ target.tgt_id }}/edit" class="btn btn-warning btn-xs">EDIT</a>
+            <a href="/run/{{ target.tgt_id }}" class="btn btn-success btn-xs" id="run">RUN</a>
+            <a href="/edit/{{ target.tgt_id }}" class="btn btn-warning btn-xs">EDIT</a>
             <a href="/delete/{{ target.tgt_id }}" class="btn btn-danger btn-xs" onclick="dell()" name="delButton">DELETE</a>
         </td>
         <td>

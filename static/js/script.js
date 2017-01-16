@@ -24,4 +24,4 @@ $(function() {
 			}
 		});
 		$('input[name=x]').focus();
-	});
+});

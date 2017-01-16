@@ -3,8 +3,8 @@ $(document).ready(function() {
  $("#run").click(function() {
 
     $.getJSON({
-    url: "/run",
-    data: { result: result },
+    url: "/run/{{tgt_id}}",
+    data: { result:result, targets:targets },
     success: function(data){
         $("#result").html(data);
     }

@@ -9,7 +9,7 @@ $(function() {
       setTimeout(function(){ div.style.display = "none"; }, 600);
     }
   }
-  
+
 //---------------------------------
 
   var h = document.getElementsByTagName('h1');
@@ -23,7 +23,7 @@ $(function() {
 
 //----------------------------------
 
-  document.body.onmousemove = function(e){
+/*  document.body.onmousemove = function(e){
     e = e || window.event;
 
     var pageY = e.pageY;
@@ -36,5 +36,5 @@ $(function() {
     }
     document.getElementById('mouseX').value =  pageX;
     document.getElementById('mouseY').value =  pageY;
-  };
+  };*/
 });
