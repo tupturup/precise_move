@@ -134,9 +134,9 @@ def run_target(tgt_id):
     #resp = Response(response=result, status=200, mimetype="application/json")
     #resp = Response(response=result, status=200, mimetype="text/html")
     #return redirect(url_for('index', result=result))
-    return jsonify(result=result, targets=targets)
+    #return jsonify(result=result, targets=targets)
     #return (resp)
-    #return render_template('index.html', result=result, targets=targets)
+    return render_template('index.html', result=result, targets=targets)
 
 
 @app.route("/dev_ide")
