@@ -2,7 +2,7 @@ $(function() {
 	var submit_form = function(e) {
 		$.getJSON(
 			//url - A string containing the URL to which the request is sent.
-			$SCRIPT_ROOT+'/_add_numbers',
+			$SCRIPT_ROOT+'/add',
 			//data - A plain object or string that is sent to the server with the request.
 			{
 				value_x: $('input[name="value_x"]').val(),
@@ -13,7 +13,7 @@ $(function() {
 			//success - A callback function that is executed if the request succeeds.
 			function(data) {
 				$('#result').text(data.result);
-				$('input[name=x]').focus().select();
+				$('input[name=name]').focus().select();
 			});
 			return false;
 		};
@@ -23,5 +23,5 @@ $(function() {
 				submit_form(e);
 			}
 		});
-		$('input[name=x]').focus();
+		$('input[name=name]').focus();
 });

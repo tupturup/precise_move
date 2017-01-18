@@ -11,7 +11,7 @@ import MySQLdb
 from flaskext.mysql import MySQL
 import sqlite3
 from sqlalchemy import or_
-
+import jinja2
 from sql import session, engine
 from models import Target
 from forms import TargetForm
@@ -86,7 +86,7 @@ def add_numbers():
         else:
             error = "Fields are not filled correctly!"
 
-    return render_template('target_form.html', form=form, action="/add", error=error)
+    return render_template('target_form.html', form=form, action="/add", error=error, submit_text="Save")
     #return jsonify(result=out)
     #return  redirect(url_for('__main__'))
 
@@ -109,7 +109,7 @@ def edit_target(tgt_id):
             return redirect(url_for('index'))
         else:
             error = "Fields are not filled correctly!"
-    return render_template('target_form.html', form=form, action="/edit/%s" % tgt_id, submit_text="Save")
+    return render_template('target_form.html', form=form, action="/edit/%s" % tgt_id, submit_text="Save changes")
 
 
 @app.route("/delete/<int:tgt_id>")
@@ -146,6 +146,6 @@ def dev_ide():
 
 if __name__ == "__main__":
     #sleep(10)
-    sys.stdout.flush()
-    app.debug = True
+    #sys.stdout.flush()
+    #app.debug = True
     app.run()

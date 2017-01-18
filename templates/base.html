@@ -30,7 +30,7 @@
     <div class="row">
       <div class="col-xs-offset-3">
         <!-- NAVIGATION BUTTONS -->
-        <div class="container-fluid" style="margin: 15pt">
+        <div class="container-fluid" style="margin: 15pt" id="header">
           <span><a class="btn btn-lg btn-default glyphicon glyphicon-th-list" style="border:none" href="/" role="button"> Targets</a></span>
           <span><a class="btn btn-lg btn-default glyphicon glyphicon-console" style="border:none" href="/dev_ide" role="button"> Ide</a></span>
           <span><a class="btn btn-lg btn-default glyphicon  glyphicon-cog" style="border:none" href="#" role="button"> Settings</a></span>
@@ -40,7 +40,7 @@
 
       <div class="container-fluid">
         <div class="col-xs-offset-4">
-
+          <div id="target_table">
           <!--{% with messages = get_flashed_messages() %}
           {% if messages %}-->
 
@@ -57,6 +57,7 @@
 
           {% block content %}
           {% endblock %}
+          </div>
         </div>
       </div>
     </div> <!--row-->

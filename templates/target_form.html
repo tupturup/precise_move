@@ -14,42 +14,34 @@
 
   <div class="form-group">
     <label class="control-label col-sm-1" for="tgt_name">{{ form.tgt_name.label }}</label>
-    <div class="col-sm-3"><input class="form-control" id="tgt_name" placeholder="Enter target name">{{ form.tgt_name }}</div>
+    <div class="col-sm-3">{{ form.tgt_name(class_="input form-control", placeholder="Enter target name") }}</div>
 
     {% for message in form.tgt_name.errors %}
     <div class="controls"><p><font color="red">{{ message }}</font></p></div>
     {% endfor %}
   </div>
 
-
   <div class="form-group">
-    <label class="control-label col-sm-1" for="email">Email:</label>
-    <div class="col-sm-3">
-      <input type="email" class="form-control" id="email" placeholder="Enter email">
-    </div>
-  </div>
-
-  <div class="control-group">
-    <label class="control-label" for="value_x">{{ form.value_x.label }}</label>
-    <div class="controls"> {{ form.value_x }}</div>
+    <label class="control-label col-sm-1" for="value_x">{{ form.value_x.label }}</label>
+    <div class="col-sm-3">{{ form.value_x(class_="input form-control", placeholder="Axis X") }}</div>
 
     {% for message in form.value_x.errors %}
     <div class="controls"><p><font color="red">{{ message }}</font></p></div>
     {% endfor %}
   </div>
 
-  <div class="control-group">
-    <label class="control-label" for="value_y">{{ form.value_y.label }}</label>
-    <div class="controls"> {{ form.value_y }}</div>
+  <div class="form-group">
+    <label class="control-label col-sm-1" for="value_y">{{ form.value_y.label }}</label>
+    <div class="col-sm-3"> {{ form.value_y(class_="input form-control", placeholder="Axis Y") }}</div>
 
     {% for message in form.value_y.errors %}
     <div><p><font color="red">{{ message }}</font></p></div>
     {% endfor %}
   </div>
 
-  <div class="control-group">
-    <label class="control-label" for="value_z">{{ form.value_z.label }}</label>
-    <div class="controls"> {{ form.value_z }}</div>
+  <div class="form-group">
+    <label class="control-label col-sm-1" for="value_z">{{ form.value_z.label }}</label>
+    <div class="col-sm-3"> {{ form.value_z(class_="input form-control", placeholder="Axis Z") }}</div>
 
     {% for message in form.value_z.errors %}
     <div><p><font color="red">{{ message }}</font></p></div>
@@ -58,7 +50,7 @@
 
   <div class="control-group">
     <div class="controls">
-      <button type="submit" class="btn">{% if submit_text %}{{ submit_text }}{% else %}Add{% endif %}</button>
+      <button type="submit" class="btn">{% if submit_text %}{{ submit_text }}{% else %} Add {% endif %}</button>
     </div>
   </div>
 </form>

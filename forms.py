@@ -1,5 +1,5 @@
 from wtforms import Form, StringField, validators, FloatField, ValidationError
-from  sql import session
+from sql import session
 from models import Target
 
 def get_target():
