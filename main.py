@@ -109,7 +109,7 @@ def edit_target(tgt_id):
             return redirect(url_for('index'))
         else:
             error = "Fields are not filled correctly!"
-    return render_template('target_form.html', form=form, action="/%s/edit" % tgt_id, submit_text="Save")
+    return render_template('target_form.html', form=form, action="/edit/%s" % tgt_id, submit_text="Save")
 
 
 @app.route("/delete/<int:tgt_id>")
