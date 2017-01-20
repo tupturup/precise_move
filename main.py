@@ -6,7 +6,7 @@ from time import sleep
 import os
 import sys
 import serial
-from flask import Flask, redirect, url_for, request, render_template, jsonify, flash, Response
+from flask import Flask, redirect, url_for, request, render_template, jsonify, flash, Response, g
 import MySQLdb
 from flaskext.mysql import MySQL
 import sqlite3
@@ -15,15 +15,21 @@ import jinja2
 from sql import session, engine
 from models import Target
 from forms import TargetForm
+import flask_sijax
 #import mysql.connector as mc
 
+path = os.path.join('.', os.path.dirname(__file__), 'static/js/sijax/')
+
 app = Flask(__name__)
+app.config['SIJAX_STATIC_PATH'] = path
+app.config['SIJAX_JSON_URI'] = '/static/js/sijax/json2.js'
+flask_sijax.Sijax(app)
+
+
 app.secret_key = 'some_secret'
 
 Target.metadata.create_all(engine)
 
-
-from flask import jsonify
 
 class InvalidUsage(Exception):
     status_code = 400
@@ -94,6 +100,7 @@ def add_numbers():
 @app.route("/edit/<int:tgt_id>", methods=['GET', 'POST'])
 def edit_target(tgt_id):
     form = TargetForm(request.form)
+
     if request.method == 'GET':
         form = TargetForm(request.form, session.query(Target).get(tgt_id))
     if request.method == 'POST':
@@ -139,9 +146,16 @@ def run_target(tgt_id):
     return render_template('index.html', result=result, targets=targets)
 
 
-@app.route("/dev_ide")
+@flask_sijax.route(app, "/dev_ide")
 def dev_ide():
+    def say_hi(obj_response):
+       obj_response.alert('Hi there!')
+    if g.sijax.is_sijax_request:
+       # Sijax request detected - let Sijax handle it
+       g.sijax.register_callback('say_hi', say_hi)
+       return g.sijax.process_request()
     return render_template('dev_ide.html')
+
 
 
 if __name__ == "__main__":

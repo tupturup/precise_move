@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<div id="target_table">
 {% if error %}
 <div class="alert alert-warning">
   <span class="closebtn">&times;</span>
@@ -50,9 +50,9 @@
 
   <div class="control-group">
     <div class="controls">
-      <button type="submit" class="btn">{% if submit_text %}{{ submit_text }}{% else %} Add {% endif %}</button>
+      <button type="submit" class="btn" id="save_add">{% if submit_text %}{{ submit_text }}{% else %} Add {% endif %}</button>
     </div>
   </div>
 </form>
-
+</div>
 {% endblock %}

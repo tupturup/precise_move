@@ -19,7 +19,8 @@
   <script type="text/javascript" src="/static/js/skr.js"></script>
   <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript">var $SCRIPT_ROOT = {{ request.script_root | tojson | safe }};</script>
-
+  <script type="text/javascript" src="/static/js/sijax/sijax.js"></script>
+  <script type="text/javascript"> {{ g.sijax.get_js()|safe }} </script>
   <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
   <link href="{{ url_for('static', filename='font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet" media="screen">
 </head>
@@ -27,10 +28,12 @@
 <body>
   <!-- START OF THE DOCUMENT -->
   <div class="container-fluid">
-    <div class="row">
+    <div class="row" id="everything">
       <div class="col-xs-offset-3">
         <!-- NAVIGATION BUTTONS -->
         <div class="container-fluid" style="margin: 15pt" id="header">
+    <!--      <span><input type="button" class="btn btn-lg btn-default glyphicon glyphicon-th-list" id="targ_list" href="/" style="width:150pt; border:none;" value="Targets" /></span>
+          <span><input type="button" class="btn btn-lg btn-default glyphicon glyphicon-console" id="ide" href="/dev_ide" style="width:150pt; border:none;" value="Ide" /></span>-->
           <span><a class="btn btn-lg btn-default glyphicon glyphicon-th-list" style="border:none" href="/" role="button"> Targets</a></span>
           <span><a class="btn btn-lg btn-default glyphicon glyphicon-console" style="border:none" href="/dev_ide" role="button"> Ide</a></span>
           <span><a class="btn btn-lg btn-default glyphicon  glyphicon-cog" style="border:none" href="#" role="button"> Settings</a></span>
@@ -40,7 +43,7 @@
 
       <div class="container-fluid">
         <div class="col-xs-offset-4">
-          <div id="target_table">
+          <div id=bodyy>
           <!--{% with messages = get_flashed_messages() %}
           {% if messages %}-->
 
@@ -63,4 +66,6 @@
     </div> <!--row-->
   </div> <!--container-fluid-->
 </body>
+
+
 </html>

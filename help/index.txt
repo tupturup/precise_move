@@ -1,0 +1,63 @@
+$('#run').click(function(tgt_id) {
+   $.ajax("{{ url_for('run_target', tgt_id=1) }}").done(function (reply) {
+      $('#everything').html(reply);
+   })}
+});
+-----------------------------------
+<button type="submit" class="btn" id="save_add">{% if submit_text %}{{ submit_text }}{% else %} Add {% endif %}</button>
+
+----------------------------------
+
+skr.js
+
+$(document).ready(function() {
+
+ $("#run").click(function(tgt_id) {
+
+    $.getJSON({
+    url: "/run/{{tgt_id}}",
+    data: "{ result:result, targets:targets, tgt_id:tgt_id }",
+    success: function(data){
+        $("#result").html(data);
+    },
+    done: function(data){
+      $('#everything').html(data);
+    }
+    });
+
+
+    //document.getElementById('result').innerHTML = rez;
+ });
+});
+------------------------------------
+
+BASE
+
+<script>
+$(document).ready( function() {
+  $('#next').click(function() {
+     $.ajax("{{ url_for('add_numbers') }}").done(function (reply) {
+        $('#everything').html(reply);
+     });
+  });
+
+  $('#targ_list').click(function() {
+     $.ajax("{{ url_for('index') }}").done(function (reply) {
+        $('#everything').html(reply);
+     });
+  });
+
+  $('#ide').click(function() {
+     $.ajax("{{ url_for('dev_ide') }}").done(function (reply) {
+        $('#everything').html(reply);
+     });
+  });
+
+  $('#save_ch').click(function(tgt_id) {
+     $.ajax("{{ url_for('edit_target') }}").done(function (reply) {
+        $('#everything').html(reply);
+     });
+  });
+
+});
+</script>

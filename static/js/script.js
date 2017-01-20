@@ -17,11 +17,12 @@ $(function() {
 			});
 			return false;
 		};
+
 		$('button#calculate').click(submit_form);
 		$('input[type=text]').keydown(function(e) {
 			if (e.keyCode == 13) {
 				submit_form(e);
 			}
 		});
-		$('input[name=name]').focus();
+		$('input[name="name"]').focus();
 });
