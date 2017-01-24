@@ -20,7 +20,7 @@
   <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript">var $SCRIPT_ROOT = {{ request.script_root | tojson | safe }};</script>
   <script type="text/javascript" src="/static/js/sijax/sijax.js"></script>
-  <script type="text/javascript"> {{ g.sijax.get_js()|safe }} </script>
+  <script type="text/javascript"> {{ g.sijax.get_js() | safe }} </script>
   <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
   <link href="{{ url_for('static', filename='font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet" media="screen">
 </head>
@@ -28,25 +28,39 @@
 <body>
   <!-- START OF THE DOCUMENT -->
   <div class="container-fluid">
+
     <div class="row" id="everything">
       <div class="col-xs-offset-3">
         <!-- NAVIGATION BUTTONS -->
         <div class="container-fluid" style="margin: 15pt" id="header">
-    <!--      <span><input type="button" class="btn btn-lg btn-default glyphicon glyphicon-th-list" id="targ_list" href="/" style="width:150pt; border:none;" value="Targets" /></span>
+          <!--      <span><input type="button" class="btn btn-lg btn-default glyphicon glyphicon-th-list" id="targ_list" href="/" style="width:150pt; border:none;" value="Targets" /></span>
           <span><input type="button" class="btn btn-lg btn-default glyphicon glyphicon-console" id="ide" href="/dev_ide" style="width:150pt; border:none;" value="Ide" /></span>-->
           <span><a class="btn btn-lg btn-default glyphicon glyphicon-th-list" style="border:none" href="/" role="button"> Targets</a></span>
           <span><a class="btn btn-lg btn-default glyphicon glyphicon-console" style="border:none" href="/dev_ide" role="button"> Ide</a></span>
           <span><a class="btn btn-lg btn-default glyphicon  glyphicon-cog" style="border:none" href="#" role="button"> Settings</a></span>
           <span><a class="btn btn-lg btn-default glyphicon glyphicon-question-sign" style="border:none" href="#" role="button"> Help</a></span>
-        </div> <!-- container-fluid -->
-      </div> <!-- col-xs-offset-2 -->
+        </div>
+      </div>
+    </div>
 
-      <div class="container-fluid">
-        <div class="col-xs-offset-4">
-          <div id=bodyy>
+    <div class="row">
+      <div class="col-xs-offset-1">
+        <div class="col-xs-offset-2">
+
+          <div id="add_search">
+            <div class="row">
+              <form action="/search_results" class="form-search span12">
+                <a class="btn btn-link btn-lg" href="/add" style="width:150pt;" type="button" role="button" id="add_new_target"><span class="glyphicon glyphicon-plus">Add</span></a>
+                <input type="text" class="input-sm search-query " name="q" value="{% if q %} {{ q }} {% endif %}">
+                <button type="submit" class="btn">Search</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div id=bodyy>
           <!--{% with messages = get_flashed_messages() %}
           {% if messages %}-->
-
           <div class="alert alert-success">
             <span class="closebtn">&times;</span>
             <strong>Success!</strong>
@@ -54,18 +68,26 @@
             {{ message }}
             {% endfor %}
           </div>
-
           <!--{% endif %}
           {% endwith %}-->
 
-          {% block content %}
-          {% endblock %}
+          <div>
+            {% block content %}
+
+            {% endblock %}
           </div>
+
         </div>
       </div>
-    </div> <!--row-->
-  </div> <!--container-fluid-->
+    </div>
+  </div> <!--row-->
+</div> <!--container-fluid-->
+
+<script>
+  $(function() {
+    nav = $('#add_search')
+    if($('#newone').is(':visible')) { nav.hide() }
+  })
+</script>
 </body>
-
-
 </html>

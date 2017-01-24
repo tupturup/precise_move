@@ -148,14 +148,23 @@ def run_target(tgt_id):
 
 @flask_sijax.route(app, "/dev_ide")
 def dev_ide():
+    targets = session.query(Target).all()
     def say_hi(obj_response):
-       obj_response.alert('Hi there!')
+       obj_response.alert("hi")
     if g.sijax.is_sijax_request:
        # Sijax request detected - let Sijax handle it
        g.sijax.register_callback('say_hi', say_hi)
        return g.sijax.process_request()
     return render_template('dev_ide.html')
 
+
+@app.route("/search_results")
+def search_results():
+    q = request.values['q']
+    a = 1;
+    targets = session.query(Target).filter(
+        or_(Target.tgt_name.ilike("%" + q + "%"), Target.value_x.ilike("%" + q + "%"), Target.value_y.ilike("%" + q + "%"), Target.value_z.ilike("%" + q + "%")))
+    return render_template('search_results.html', targets=targets, q=q)
 
 
 if __name__ == "__main__":

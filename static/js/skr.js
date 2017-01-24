@@ -8,6 +8,7 @@ $(document).ready(function() {
           $("#result").html(data);
       }
       });
+      $("#add_search").hide();
     //document.getElementById('result').innerHTML = rez;
  });
 });

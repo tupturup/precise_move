@@ -1,18 +1,18 @@
 <tbody>
-    <div id="targetRow">
-        <td>
-          {{ target.tgt_name }} =
-        </td>
-        <td>
-          [ X={{ target.value_x }}, Y={{ target.value_y }}, Z={{ target.value_z }} ]
-        </td>
-        <td>
-          <a href="/run/{{ target.tgt_id }}" class="btn btn-success btn-xs" id="run1">RUN</a>
-          <a href="/edit/{{ target.tgt_id }}" class="btn btn-warning btn-xs" onclick="return confirm('Are you sure you want to edit target {{ target.tgt_name }}?');">EDIT</a>
-          <a href="/delete/{{ target.tgt_id }}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete target {{ target.tgt_name }}?');" name="delButton">DELETE</a>
-        </td>
-        <td>
-          <h1>with </h1>
-        </td>
-    </div>
+  <div id="targetRow">
+    <td>
+      {{ target.tgt_name }} =
+    </td>
+    <td>
+      [ X={{ target.value_x }}, Y={{ target.value_y }}, Z={{ target.value_z }} ]
+    </td>
+    <td>
+      <a href="/run/{{ target.tgt_id }}" class="btn btn-success btn-xs" id="run1">RUN</a>
+      <a href="/edit/{{ target.tgt_id }}" class="btn btn-warning btn-xs" onclick="return confirm('Are you sure you want to edit target {{ target.tgt_name }}?');">EDIT</a>
+      <a href="/delete/{{ target.tgt_id }}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete target {{ target.tgt_name }}?');" name="delButton">DELETE</a>
+    </td>
+    <td>
+      <h1>with </h1>
+    </td>
+  </div>
 </tbody>

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div>
+      {% if targets|list|length %}
+      <div>
+        <table class="table table-hover">
+          <tr>
+            <thead>
+              <td><b>Name</b></td>
+              <td><b>Axis</b></td>
+              <td></td>
+            </thead>
+            <div>
+              {% for target in targets %}
+              {% include 'targ.html' %}
+              {% endfor %}
+            </div>
+          </tr>
+        </table>
+      </div>
+      {% else %}
+      <h3>No such target</h3>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
