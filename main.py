@@ -16,6 +16,7 @@ from sql import session, engine
 from models import Target
 from forms import TargetForm
 import flask_sijax
+from pars import parseString
 #import mysql.connector as mc
 
 path = os.path.join('.', os.path.dirname(__file__), 'static/js/sijax/')
@@ -39,12 +40,12 @@ class InvalidUsage(Exception):
         self.message = message
         if status_code is not None:
             self.status_code = status_code
-        self.payload = payload
+            self.payload = payload
 
-    def to_dict(self):
-        rv = dict(self.payload or ())
-        rv['message'] = self.message
-        return rv
+            def to_dict(self):
+                rv = dict(self.payload or ())
+                rv['message'] = self.message
+                return rv
 
 
 @app.errorhandler(InvalidUsage)
@@ -58,10 +59,9 @@ def handle_invalid_usage(error):
 def index():
     targets = session.query(Target).all()
     return render_template('index.html', targets=targets)
-    #promijeniti imena targets i target da se ne zbunjujem
 
 
-@app.route('/targets')
+@app.route('/targets', methods=['GET'])
 def targets():
     targets = session.query(Target).all()
     return render_template('targets.html', targets=targets)
@@ -76,28 +76,16 @@ def add_numbers():
         if form.validate():
             target = Target(form.tgt_name.data, form.value_x.data, form.value_y.data, form.value_z.data)
             flash('You sucessfully added a new target!')
-            ser = serial.Serial(port='COM2', baudrate=115200,
-                parity=serial.PARITY_NONE,
-                stopbits=serial.STOPBITS_ONE,
-                bytesize=serial.EIGHTBITS,
-                timeout=3)
-
-            sss = 'XJ'+ str(int(target.value_x)) +','+ str(int(target.value_y)) + ',' + str(int(target.value_z)) + '\r'
-            ser.write(sss)
-            result = ser.read(30)
-
             session.add(target)
             session.commit()
             return redirect(url_for('index'))
         else:
             error = "Fields are not filled correctly!"
 
-    return render_template('target_form.html', form=form, action="/add", error=error, submit_text="Save")
-    #return jsonify(result=out)
-    #return  redirect(url_for('__main__'))
+    return render_template('target_form.html', form=form, method="POST", action="/add", error=error, submit_text="Save")
 
 
-@app.route("/edit/<int:tgt_id>", methods=['GET', 'POST'])
+@app.route("/targets/<int:tgt_id>/edit", methods=['GET', 'POST'])
 def edit_target(tgt_id):
     form = TargetForm(request.form)
 
@@ -116,33 +104,33 @@ def edit_target(tgt_id):
             return redirect(url_for('index'))
         else:
             error = "Fields are not filled correctly!"
-    return render_template('target_form.html', form=form, action="/edit/%s" % tgt_id, submit_text="Save changes")
+    return render_template('target_form.html', form=form, method="POST", action="/targets/%s/edit" % tgt_id, submit_text="Save changes")
 
 
-@app.route("/delete/<int:tgt_id>")
+@app.route("/targets/<int:tgt_id>/delete", methods=['GET'])
 def delete_target(tgt_id):
     target = session.query(Target).get(tgt_id)
     session.delete(target)
     session.commit()
     return redirect(url_for('index'))
-    #return ("Deleted")
 
 
-@app.route("/run/<int:tgt_id>", methods=['GET', 'POST'])
+@app.route("/targets/<int:tgt_id>/run", methods=['GET', 'POST'])
 def run_target(tgt_id):
     targets = session.query(Target).all()
     result = None
     target_db = session.query(Target).get(tgt_id)
 
-    ser = serial.Serial(port='COM2', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=3)
-    sss = 'XJ'+ str(int(target_db.value_x)) +','+ str(int(target_db.value_y)) + ',' + str(int(target_db.value_z)) + '\r'
-    ser.write(sss)
-    result = ser.read(30)
-    #resp = Response(response=result, status=200, mimetype="application/json")
-    #resp = Response(response=result, status=200, mimetype="text/html")
-    #return redirect(url_for('index', result=result))
-    #return jsonify(result=result, targets=targets)
-    #return (resp)
+    ser1 = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=3)
+    sss = 'X1J'+ str(int(target_db.value_x)) +','+ str(int(target_db.value_y)) + ',' + str(int(target_db.value_z)) + '\r'
+    sss1 = 'X2J'+ str(int(target_db.value_x)) +','+ str(int(target_db.value_y)) + ',' + str(int(target_db.value_z)) + '\r'
+
+    ser1.write(sss)
+    ser1.write(sss1)
+    result = ser1.read(30)
+
+    ser1.close()
+
     return render_template('index.html', result=result, targets=targets)
 
 
@@ -157,14 +145,33 @@ def dev_ide():
        return g.sijax.process_request()
     return render_template('dev_ide.html')
 
-
-@app.route("/search_results")
+@app.route("/search_results", methods=['GET'])
 def search_results():
     q = request.values['q']
-    a = 1;
     targets = session.query(Target).filter(
-        or_(Target.tgt_name.ilike("%" + q + "%"), Target.value_x.ilike("%" + q + "%"), Target.value_y.ilike("%" + q + "%"), Target.value_z.ilike("%" + q + "%")))
+    or_(Target.tgt_name.ilike("%" + q + "%"), Target.value_x.ilike("%" + q + "%"), Target.value_y.ilike("%" + q + "%"), Target.value_z.ilike("%" + q + "%")))
     return render_template('search_results.html', targets=targets, q=q)
+
+
+# @app.route("/commands", methods=['POST', 'GET'])
+# def run_commands():
+#     targets = session.query(Target).all()
+#     comm = request.values['comm']
+#     pars = parseString(comm)
+#     x, y, z = 0, 0, 0
+#     lenx, leny, lenz = 0, 0, 0
+#
+#     if pars[0] == "goto":
+#         x = pars[1]
+#         if x[0:2] == "X=":
+#             return len(x)
+#             lenx = len(x)-2
+#             return lenx
+#         for i in a:
+#             if i[0] == "X":
+#                 return "wds"
+#
+
 
 
 if __name__ == "__main__":

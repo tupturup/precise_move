@@ -1,6 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="col-xs-offset-2">
+
+  <div id="add_search">
+    <div class="row">
+      <form action="/search_results" class="form-search span12">
+        <a class="btn btn-link btn-lg" href="/add" style="width:150pt;" type="button" role="button" id="add_new_target"><span class="glyphicon glyphicon-plus">Add</span></a>
+        <input type="text" class="input-sm search-query " name="q" value="{% if q %}{{ q }}{% endif %}" autofocus>
+        <button type="submit" class="btn">Search</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="alert alert-success">
+    <span class="closebtn">&times;</span>
+    <strong>Success!</strong>
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+</div>
+
+<div id="search_targets">
 <div class="container-fluid">
   <div class="row-fluid">
     <div>
@@ -26,5 +54,6 @@
       {% endif %}
     </div>
   </div>
+</div>
 </div>
 {% endblock %}

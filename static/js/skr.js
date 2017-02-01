@@ -2,7 +2,7 @@ $(document).ready(function() {
 
  $("#run").click(function() {
     $.getJSON({
-      url: "/run/{{tgt_id}}",
+      url: "/targets/{{tgt_id}}run",
       data: "{ result:result, targets:targets }",
       success: function(data){
           $("#result").html(data);

@@ -3,35 +3,61 @@
 
 {% include 'modalInputForm.html' %}
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-xs-11">
-      <!--<input type="button" class="btn btn-link btn-lg" id="next" href="/add" style="width:150pt;" value="Add new" />
-      <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="myBtn"><i class="fa fa-plus index-button"></i></button>-->
+<div class="col-xs-offset-2">
 
-      <div class="target">
-        <table class="table table-hover">
-          <tr>
-            <thead>
-              <td><b>Name</b></td>
-              <td><b>Axis</b></td>
-              <td></td>
-            </thead>
-            <div>
-              {% for target in targets %}
-              {% include 'targ.html' %}
-              {% endfor %}
-            </div>
-          </tr>
-        </table>
-      </div>
+  <div id="add_search">
+    <div class="row">
+      <form action="/search_results" class="form-search span12">
+        <a class="btn btn-link btn-lg" href="/add" style="width:150pt;" type="button" role="button" id="add_new_target"><span class="glyphicon glyphicon-plus">Add</span></a>
+        <input type="text" class="input-sm search-query " name="q" value="{% if q %}{{ q }}{% endif %}" autofocus>
+        <button type="submit" class="btn">Search</button>
+      </form>
+    </div>
+  </div>
+</div>
 
-      <!-- OUTPUT -->
-      <div class="container-fluid" id="returned_result">
-        <textarea class="form-control" name="result" id="result" rows="5" method="post"> {% if result %} {{ result }} {% endif %}</textarea>
-      </div><!--col-sm-12 col-xs-12-->
+<div>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="alert alert-success">
+    <span class="closebtn">&times;</span>
+    <strong>Success!</strong>
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+</div>
 
-    </div><!--container-fluid-->
+<div id="index_target">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-11">
+        <div class="target">
+          <table class="table table-hover">
+            <tr>
+              <thead>
+                <td><b>Name</b></td>
+                <td><b>Axis</b></td>
+                <td></td>
+              </thead>
+              <div>
+                {% for target in targets %}
+                {% include 'targ.html' %}
+                {% endfor %}
+              </div>
+            </tr>
+          </table>
+        </div>
+
+        <!-- OUTPUT -->
+        <div class="container-fluid" id="returned_result">
+          <textarea class="form-control" name="result" id="result" rows="5" method="post"> {% if result %}{{ result }}{% endif %}</textarea>
+        </div><!--col-sm-12 col-xs-12-->
+
+      </div><!--container-fluid-->
+    </div>
   </div>
 </div>
 </div>
