@@ -1,39 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
-<script src="/wp-includes/js/addInput.js" language="Javascript" type="text/javascript"></script>
-<form method="POST">
-     <div id="dynamicInput">
-          <input type="text" name="myInputs[]">
-     </div>
-     <input type="button" value="Add another text input" onClick="addInput('dynamicInput');">
-</form>
-<!--<div class="col-xs-offset-2">
+
+<div class="col-xs-offset-2">
   <div id="command">
     <div class="row">
-      <form action="/commands" method="POST" class="form-search span12">
-        <input type="text" class="input-sm search-query " name="comm" autofocus>
-        <button type="submit" class="btn">Start</button>
+      <form action="/dev_ide" method="POST" class="form-search span12">
+        <textarea type=text, name="comm" rows="8" cols="80" autofocus ></textarea>
+        <button type="submit" class="btn" id="startCom">Start</button>
       </form>
     </div>
   </div>
 </div>
--->
-<script>
 
-var counter = 1;
-var limit = 30;
-function addInput(divName){
-   if (counter == limit)  {
-        alert("You have reached the limit of adding " + counter + " inputs");
-   }
-   else {
-        var newdiv = document.createElement('div');
-        newdiv.innerHTML = " <br><input type='text' name='myInputs[]'>";
-        document.getElementById(divName).appendChild(newdiv);
-        counter++;
-   }
-}
-</script>
+
 
 {% endblock %}
 
@@ -47,37 +26,37 @@ function addInput(divName){
 <head>
 <style>
 form * {
-  display: block;
-  margin: 10px;
+display: block;
+margin: 10px;
 }
 </style>
 <script language="Javascript" >
 function download(filename, text) {
-  var pom = document.createElement('a');
-  pom.setAttribute('href', 'data:text/plain;charset=utf-8,' +
+var pom = document.createElement('a');
+pom.setAttribute('href', 'data:text/plain;charset=utf-8,' +
 
 encodeURIComponent(text));
-  pom.setAttribute('download', filename);
+pom.setAttribute('download', filename);
 
-  pom.style.display = 'none';
-  document.body.appendChild(pom);
+pom.style.display = 'none';
+document.body.appendChild(pom);
 
-  pom.click();
+pom.click();
 
-  document.body.removeChild(pom);
+document.body.removeChild(pom);
 }
 </script>
 </head>
 <body>
 
 <form onsubmit="download(this['name'].value, this['text'].value)">
-  <input type="text" name="name" value="test.txt">
-  <textarea rows=3 cols=50 name="text">Please type in this box. When you
+<input type="text" name="name" value="test.txt">
+<textarea rows=3 cols=50 name="text">Please type in this box. When you
 
 click the Download button, the contents of this box will be downloaded to
 
 your machine at the location you specify. Pretty nifty. </textarea>
-  <input type="submit" value="Download">
+<input type="submit" value="Download">
 </form>
 </body>
 </html> -->

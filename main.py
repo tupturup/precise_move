@@ -17,6 +17,7 @@ from models import Target
 from forms import TargetForm
 import flask_sijax
 from pars import parseString
+from formulas import formulas
 #import mysql.connector as mc
 
 path = os.path.join('.', os.path.dirname(__file__), 'static/js/sijax/')
@@ -32,9 +33,29 @@ app.secret_key = 'some_secret'
 Target.metadata.create_all(engine)
 
 
+class switch(object):
+    def __init__(self, value):
+        self.value = value
+        self.fall = False
+
+    def __iter__(self):
+        """Return the match method once, then stop"""
+        yield self.match
+        raise StopIteration
+
+    def match(self, *args):
+        """Indicate whether or not to enter a case suite"""
+        if self.fall or not args:
+            return True
+        elif self.value in args: # changed for v1.5, see below
+            self.fall = True
+            return True
+        else:
+            return False
+
+
 class InvalidUsage(Exception):
     status_code = 400
-
     def __init__(self, message, status_code=None, payload=None):
         Exception.__init__(self)
         self.message = message
@@ -134,15 +155,20 @@ def run_target(tgt_id):
     return render_template('index.html', result=result, targets=targets)
 
 
-@flask_sijax.route(app, "/dev_ide")
+# @flask_sijax.route(app, "/dev_ide")
+# def dev_ide():
+#     targets = session.query(Target).all()
+#     def say_hi(obj_response):
+#        obj_response.alert("hi")
+#     if g.sijax.is_sijax_request:
+#        # Sijax request detected - let Sijax handle it
+#        g.sijax.register_callback('say_hi', say_hi)
+#        return g.sijax.process_request()
+#     return render_template('dev_ide.html')
+
+@app.route( "/dev_ide", methods=['GET'])
 def dev_ide():
     targets = session.query(Target).all()
-    def say_hi(obj_response):
-       obj_response.alert("hi")
-    if g.sijax.is_sijax_request:
-       # Sijax request detected - let Sijax handle it
-       g.sijax.register_callback('say_hi', say_hi)
-       return g.sijax.process_request()
     return render_template('dev_ide.html')
 
 @app.route("/search_results", methods=['GET'])
@@ -153,24 +179,67 @@ def search_results():
     return render_template('search_results.html', targets=targets, q=q)
 
 
-# @app.route("/commands", methods=['POST', 'GET'])
-# def run_commands():
-#     targets = session.query(Target).all()
-#     comm = request.values['comm']
-#     pars = parseString(comm)
-#     x, y, z = 0, 0, 0
-#     lenx, leny, lenz = 0, 0, 0
-#
-#     if pars[0] == "goto":
-#         x = pars[1]
-#         if x[0:2] == "X=":
-#             return len(x)
-#             lenx = len(x)-2
-#             return lenx
-#         for i in a:
-#             if i[0] == "X":
-#                 return "wds"
-#
+@app.route("/dev_ide", methods=['POST'])
+def run_commands():
+    comm = request.values['comm']
+    countsS = 400
+    countsA = None
+    countsB = None
+    countsC = None
+    countsX = None
+    countsY = None
+    countsZ = None
+
+    if comm:
+        parsed = parseString(comm)
+        #f = formulas(parsed)
+        l = len(parsed)
+        pairs = l-1
+        if parsed[0] == 'goto':
+            for i in range(1,pairs):
+                if parsed[i] == 'X' or parsed[i] == 'x':
+                    valueX = int(parsed[i+1])
+                    countsX = 'X1T' + str(int(valueX/1.25)) + ',1\r'
+                if parsed[i] == 'Y' or parsed[i] == 'y':
+                    valueY = int(parsed[i+1])
+                    countsY = 'X2T' + str(int(valueY/1.25)) + ',1\r'
+                if parsed[i] == 'Z' or parsed[i] == 'z':
+                    valueZ = int(parsed[i+1])
+                    countsZ = 'X3T' + str(int(valueZ/1.25)) + ',1\r'
+                if parsed[i] == 'A' or parsed[i] == 'a':
+                    valueA = int(parsed[i+1])
+                    countsA = 'X4T' + str(int(valueA/1.25)) + ',1\r'
+                if parsed[i] == 'B' or parsed[i] == 'b':
+                    valueB = int(parsed[i+1])
+                    countsB = 'X5T' + str(int(valueB/1.25)) + ',1\r'
+                if parsed[i] == 'C' or parsed[i] == 'c':
+                    valueC = int(parsed[i+1])
+                    countsC = 'X6T' + str(int(valueC/1.25)) + ',1\r'
+                if parsed[i] == 'S' or parsed[i] == 's':
+                    valueS = int(parsed[i+1])
+                    countsS = 'X1Y8,' + str(int(valueS/5)) + '\r'
+
+
+        ser = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
+
+        if countsX is not None:
+            ser = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
+            str1 = 'X1T' + countsX + ',1\r'
+            ser.write(str1)
+            str2 = 'X1Y8,' + countsS + '\r'
+            ser.write(str2)
+            sleep(2)
+            str3 = 'X1U\r'
+            ser.write(str3)
+
+            str4 = 'X127T1,2\r'
+            ser.write(str4)
+            sleep(2)
+            ser.close()
+
+    return render_template('dev_ide.html' )
+    #         print (parsed)
+
 
 
 
