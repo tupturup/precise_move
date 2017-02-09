@@ -9,19 +9,26 @@ def parseString(s):
     parenthesesL = Suppress("(")
     parenthesesR = Suppress(")")
     dot = "."
+    minus = "-"
     comma = Literal(",").setParseAction(replaceWith("."))
     semicolon = Suppress(";")
 
     element = Word( caps, max=1 ) | Word( lowers, max=1 )
-    integer = Word( digits )
-    floa = Combine( integer + Optional( comma + integer) + Optional ( dot + integer ))
+    number = Word( digits )
+    integer = Optional(minus)  + number
+    floa = Combine( integer + Optional( comma + number) + Optional ( dot + number ))
     elementRef = element + Optional( floa )
-    #go = Group(goto + parenthesesL + OneOrMore( elementRef + Optional(semicolon)) + parenthesesR)
-    #command = go + ZeroOrMore(go)
-    command = goto + parenthesesL + OneOrMore( elementRef + Optional(semicolon)) + parenthesesR
-    formulaData = command.parseString(s)
+    go = Group(goto + parenthesesL + OneOrMore( elementRef + Optional(semicolon)) + parenthesesR)
+    command = go + ZeroOrMore(go)
+    #command = goto + parenthesesL + OneOrMore( elementRef + Optional(semicolon)) + parenthesesR
+    while True:
+        try:
+            formulaData = command.parseString(s)
+            break
+        except ValueError:
+            return "error"
 
     return formulaData
 
 
-print parseString("gOto(X23,4; y234.234; s345)")
+print parseString("gOto(X-23,4; y234.234; s345) goto(X234; Y563)")
