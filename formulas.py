@@ -1,31 +1,32 @@
-def formulas(parsed):
-    l = len(parsed)
-    pairs = l-1
-    if parsed[0] == 'goto':
-        for i in range(1,pairs):
-            if parsed[i] == 'A' or parsed[i] == 'a':
-                valueA = int(parsed[i+1])
-                countsA = str(int(valueA/1.25))
-            if parsed[i] == 'X' or parsed[i] == 'x':
-                valueX = int(parsed[i+1])
-                countsX = str(int(valueX/1.25))
-            if parsed[i] == 'Y' or parsed[i] == 'y':
-                valueY = int(parsed[i+1])
-                countsY = str(int(valueY/1.25))
-            if parsed[i] == 'Z' or parsed[i] == 'z':
-                valueZ = int(parsed[i+1])
-                countsZ = str(int(valueZ/1.25))
-            if parsed[i] == 'B' or parsed[i] == 'b':
-                valueB = int(parsed[i+1])
-                countsB = str(int(valueB/1.25))
-            if parsed[i] == 'C' or parsed[i] == 'c':
-                valueC = int(parsed[i+1])
-                countsC = str(int(valueC/1.25))
-            if parsed[i] == 'S' or parsed[i] == 's':
-                valueS = int(parsed[i+1])
-                countsS = str(int(valueS/5))
-                
-                # str2 = 'X1Y8,' + countsS + '\r'
-                # return "str %s" % str2
+#!usr/bin/env python
+from __future__ import print_function
+from time import sleep
+import os
+import sys
+import serial
 
-#print formulas(['goto', 'x', '2342', 's', '345'])
+
+def canIrun(countsX, hz):
+    ser.write(countsX)
+    ser.read(10)
+    ser.write(hz)
+    ser.read(10)
+    str3 = 'X1U\r'
+    ser.write(str3)
+    r = ser.read(30)
+    checker = str(r)
+    c = int('0x' + str(checker[6]), 16)
+    d = int('0x' + str(checker[7]), 16)
+
+    checkedC = hex(c & int('0x2', 16))
+    checkedD = hex(d & int('0x4', 16))
+
+    if checkedD == 0x4:
+        ok = 1
+    else:
+        if checkedC == 0x2:
+            ok = 0
+        else:
+            ok = 1
+
+    return ok

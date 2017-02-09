@@ -17,7 +17,7 @@ from models import Target
 from forms import TargetForm
 import flask_sijax
 from pars import parseString
-from formulas import formulas
+#from formulas import canIrun
 #import mysql.connector as mc
 
 path = os.path.join('.', os.path.dirname(__file__), 'static/js/sijax/')
@@ -182,61 +182,117 @@ def search_results():
 @app.route("/dev_ide", methods=['POST'])
 def run_commands():
     comm = request.values['comm']
-    countsS = 400
+    hz = 400
     countsA = None
     countsB = None
     countsC = None
     countsX = None
     countsY = None
     countsZ = None
+    broadcast = 'X127T1,2\r'
+    okToRun = None
+    okX = None
+    okY = None
 
     if comm:
         parsed = parseString(comm)
-        #f = formulas(parsed)
         l = len(parsed)
         pairs = l-1
+
         if parsed[0] == 'goto':
+
             for i in range(1,pairs):
+                if parsed[i] == 'S' or parsed[i] == 's':
+                    valueS = float(parsed[i+1])
+                    hz = str(int(valueS/5))
                 if parsed[i] == 'X' or parsed[i] == 'x':
-                    valueX = int(parsed[i+1])
+                    valueX = float(parsed[i+1])
                     countsX = 'X1T' + str(int(valueX/1.25)) + ',1\r'
+
                 if parsed[i] == 'Y' or parsed[i] == 'y':
-                    valueY = int(parsed[i+1])
+                    valueY = float(parsed[i+1])
                     countsY = 'X2T' + str(int(valueY/1.25)) + ',1\r'
+
                 if parsed[i] == 'Z' or parsed[i] == 'z':
-                    valueZ = int(parsed[i+1])
+                    valueZ = float(parsed[i+1])
                     countsZ = 'X3T' + str(int(valueZ/1.25)) + ',1\r'
                 if parsed[i] == 'A' or parsed[i] == 'a':
-                    valueA = int(parsed[i+1])
+                    valueA = float(parsed[i+1])
                     countsA = 'X4T' + str(int(valueA/1.25)) + ',1\r'
                 if parsed[i] == 'B' or parsed[i] == 'b':
-                    valueB = int(parsed[i+1])
+                    valueB = float(parsed[i+1])
                     countsB = 'X5T' + str(int(valueB/1.25)) + ',1\r'
                 if parsed[i] == 'C' or parsed[i] == 'c':
-                    valueC = int(parsed[i+1])
+                    valueC = float(parsed[i+1])
                     countsC = 'X6T' + str(int(valueC/1.25)) + ',1\r'
-                if parsed[i] == 'S' or parsed[i] == 's':
-                    valueS = int(parsed[i+1])
-                    countsS = 'X1Y8,' + str(int(valueS/5)) + '\r'
 
 
-        ser = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
+            ser = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=3)
 
-        if countsX is not None:
-            ser = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
-            str1 = 'X1T' + countsX + ',1\r'
-            ser.write(str1)
-            str2 = 'X1Y8,' + countsS + '\r'
-            ser.write(str2)
-            sleep(2)
-            str3 = 'X1U\r'
-            ser.write(str3)
 
-            str4 = 'X127T1,2\r'
-            ser.write(str4)
-            sleep(2)
-            ser.close()
+            if countsX != None:
 
+                ser.write(countsX)
+                ser.read(15)
+                ser.write('X1Y8,' + hz + '\r')
+                ser.read(15)
+                str3 = 'X1U\r'
+                ser.write(str3)
+                r = ser.read(30)
+                checker = str(r)
+
+                c = int('0x' + str(checker[6]), 16)
+                d = int('0x' + str(checker[7]), 16)
+
+                checkedC = hex(c & int('0x2', 16))
+                checkedD = hex(d & int('0x4', 16))
+
+                if checkedD == 0x4:
+                    okX = 1
+                else:
+                    if checkedC == 0x2:
+                        okX = 0
+                    else:
+                        okX = 1
+
+
+
+            #    okX = canIrun(countsX, hz)
+
+            if countsY != None:
+                ser.write(countsY)
+                ser.read(15)
+                ser.write('X2Y8,' + hz + '\r')
+                ser.read(15)
+                str3 = 'X2U\r'
+                ser.write(str3)
+                r = ser.read(30)
+                checker = str(r)
+
+                c = int('0x' + str(checker[6]), 16)
+                d = int('0x' + str(checker[7]), 16)
+
+                checkedC = hex(c & int('0x2', 16))
+                checkedD = hex(d & int('0x4', 16))
+
+                if checkedD == 0x4:
+                    okY = 1
+                else:
+                    if checkedC == 0x2:
+                        okY = 0
+                    else:
+                        okY = 1
+
+            #while (okX or okY):
+            if (okX == 1 or okY == 1):
+                ser.write(broadcast)
+
+            #else:
+            #    return "problem"
+
+    else:
+        return "error"
+    ser.close()
     return render_template('dev_ide.html' )
     #         print (parsed)
 
@@ -245,6 +301,6 @@ def run_commands():
 
 if __name__ == "__main__":
     #sleep(10)
-    #sys.stdout.flush()
-    #app.debug = True
+    sys.stdout.flush()
+    app.debug = True
     app.run()

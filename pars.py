@@ -1,4 +1,4 @@
-from pyparsing import Word, Optional, OneOrMore, Group, ParseException, Combine, CaselessLiteral, Suppress
+from pyparsing import Word, Optional, OneOrMore, Group, ParseException, Combine, CaselessLiteral, Suppress, ZeroOrMore, Literal, replaceWith
 import pyparsing
 
 def parseString(s):
@@ -9,15 +9,19 @@ def parseString(s):
     parenthesesL = Suppress("(")
     parenthesesR = Suppress(")")
     dot = "."
-    comma = ","
+    comma = Literal(",").setParseAction(replaceWith("."))
     semicolon = Suppress(";")
 
     element = Word( caps, max=1 ) | Word( lowers, max=1 )
     integer = Word( digits )
-    floa = Combine( integer + Optional( dot | comma + integer))
+    floa = Combine( integer + Optional( comma + integer) + Optional ( dot + integer ))
     elementRef = element + Optional( floa )
+    #go = Group(goto + parenthesesL + OneOrMore( elementRef + Optional(semicolon)) + parenthesesR)
+    #command = go + ZeroOrMore(go)
     command = goto + parenthesesL + OneOrMore( elementRef + Optional(semicolon)) + parenthesesR
-
     formulaData = command.parseString(s)
+
     return formulaData
-print parseString("goto(a234; x234)")
+
+
+print parseString("gOto(X23,4; y234.234; s345)")
