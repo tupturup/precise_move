@@ -17,9 +17,10 @@ from models import Target
 from forms import TargetForm
 import flask_sijax
 from pars import parseString
-
+from commands import run
 #from formulas import canIrun
 #import mysql.connector as mc
+
 
 path = os.path.join('.', os.path.dirname(__file__), 'static/js/sijax/')
 
@@ -86,6 +87,11 @@ def add_numbers():
     return render_template('target_form.html', form=form, method="POST", action="/add", error=error, submit_text="Save")
 
 
+@app.route("/targets/<int:tgt_id>", methods=['GET'])
+def show_target(tgt_id):
+    target = session.query(Target).get(tgt_id)
+    return render_template('show_target.html', target=target)
+
 @app.route("/targets/<int:tgt_id>/edit", methods=['GET', 'POST'])
 def edit_target(tgt_id):
     form = TargetForm(request.form)
@@ -122,15 +128,7 @@ def run_target(tgt_id):
     result = None
     target_db = session.query(Target).get(tgt_id)
 
-    ser1 = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=3)
-    sss = 'X1J'+ str(int(target_db.value_x)) +','+ str(int(target_db.value_y)) + ',' + str(int(target_db.value_z)) + '\r'
-    sss1 = 'X2J'+ str(int(target_db.value_x)) +','+ str(int(target_db.value_y)) + ',' + str(int(target_db.value_z)) + '\r'
-
-    ser1.write(sss)
-    ser1.write(sss1)
-    result = ser1.read(30)
-
-    ser1.close()
+    result = run(target_db)
 
     return render_template('index.html', result=result, targets=targets)
 
@@ -146,10 +144,7 @@ def run_target(tgt_id):
 #        return g.sijax.process_request()
 #     return render_template('dev_ide.html')
 
-@app.route( "/dev_ide", methods=['GET'])
-def dev_ide():
-    targets = session.query(Target).all()
-    return render_template('dev_ide.html')
+
 
 @app.route("/search_results", methods=['GET'])
 def search_results():
@@ -159,13 +154,25 @@ def search_results():
     return render_template('search_results.html', targets=targets, q=q)
 
 
+@app.route( "/dev_ide", methods=['GET'])
+def dev_ide():
+    targets = session.query(Target).all()
+    speed = '350'
+    return render_template('dev_ide.html', targets=targets, speed=speed)
+
+
 @app.route("/dev_ide", methods=['POST'])
 def run_commands():
+    targets = session.query(Target).all()
     comm = request.values['comm']
+    speed = request.values['speed']
+    if speed:
+        speed = str(speed)
+    else:
+        speed = '300'
 
     if comm:
         ser = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=3)
-        hz = '400'
         countsA = None
         countsB = None
         countsC = None
@@ -180,22 +187,21 @@ def run_commands():
         list = parseString(comm)
         #l = len(parsed)
         #pairs = l-1
-
         #if parsed[0] == 'goto':
+
+
         for parsed in list:
             l = len(parsed)
-            pairs = l-1
+
+            #pairs = l-1
             if parsed[0] == 'goto':
-                for i in range(1,pairs,2):
+                for i in range(1,len(parsed)-1):
                     if parsed[i] == 'S' or parsed[i] == 's':
-                        valueS = float(parsed[i+1])
-                        hz = str(int(valueS/5))
+                        speed = str(int(float(parsed[i+1])/5))
                     if parsed[i] == 'X' or parsed[i] == 'x':
-                        valueX = float(parsed[i+1])
-                        countsX = 'X1T' + str(int(valueX/1.25)) + ',1\r'
+                        countsX = 'X1T' + str(int(float(parsed[i+1])/1.25)) + ',1\r'
                     if parsed[i] == 'Y' or parsed[i] == 'y':
-                        valueY = float(parsed[i+1])
-                        countsY = 'X2T' + str(int(valueY/1.25)) + ',1\r'
+                        countsY = 'X2T' + str(int(float(parsed[i+1])/1.25)) + ',1\r'
                     # if parsed[i] == 'Z' or parsed[i] == 'z':
                     #     valueZ = float(parsed[i+1])
                     #     countsZ = 'X3T' + str(int(valueZ/1.25)) + ',1\r'
@@ -212,12 +218,19 @@ def run_commands():
                 if countsX != None:
                     f.write('X\n')
                     ser.write(countsX)
-                    f.write(ser.read(15))
-                    ser.write('X1Y8,' + hz + '\r')
-                    f.write(ser.read(15))
+                    #bytesToRead = ser.inWaiting()
+                    f.write(ser.read(20))
+                    ser.write('X1Y8,' + speed + '\r')
+                    #while True:
+                    #bytesToRead = ser.inWaiting()
+                    f.write(ser.read(20))
                     str3 = 'X1U\r'
                     ser.write(str3)
-                    r = ser.read(30)
+                    #while True:
+                    #bytesToRead = ser.inWaiting()
+                    r = ser.read(10)
+                    #return r
+
                     f.write(r)
                     checker = str(r)
 
@@ -236,16 +249,19 @@ def run_commands():
                             okX = '1'
 
 
-                #    okX = canIrun(countsX, hz)
+                #    okX = canIrun(countsX, speed)
                 if countsY != None:
                     f.write('Y\n')
                     ser.write(countsY)
-                    f.write(ser.read(15))
-                    ser.write('X2Y8,' + hz + '\r')
-                    f.write(ser.read(15))
+                    #bytesToRead = ser.inWaiting()
+                    f.write(ser.read(20))
+                    ser.write('X2Y8,' + speed + '\r')
+                    #bytesToRead = ser.inWaiting()
+                    f.write(ser.read(20))
                     str3 = 'X2U\r'
                     ser.write(str3)
-                    r = ser.read(30)
+                    #bytesToRead = ser.inWaiting()
+                    r = ser.read(10)
                     f.write(r)
                     checker = str(r)
 
@@ -273,7 +289,7 @@ def run_commands():
         return "error"
     f.close()
     ser.close()
-    return render_template('dev_ide.html' )
+    return render_template('dev_ide.html', targets=targets, speed=speed )
 
 
 if __name__ == "__main__":

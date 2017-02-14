@@ -11,6 +11,6 @@ def type_num(form, field):
 
 class TargetForm(Form):
     tgt_name = StringField('Name', [validators.Required("Target name missing!"), validators.Length(min=3, max=10, message="Name must have between 3 and 10 characters.")])
-    value_x = FloatField('X', [validators.Required("Axis value missing!"), type_num])
-    value_y = FloatField('Y', [validators.Required("Axis value missing!"), type_num])
-    value_z = FloatField('Z', [validators.Optional(), type_num])
+    value_x = FloatField('X', [validators.Optional("Axis value missing!"), type_num])
+    value_y = FloatField('Y', [validators.Optional("Axis value missing!"), type_num])
+    value_z = FloatField('Z', [validators.Optional("Axis value missing!"), type_num])

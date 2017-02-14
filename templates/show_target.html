@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="col-xs-offset-2" style="margin-top: 30px;">
+  <div class="col-xs-offset-2 col-xs-4">
+    <!-- DATA FOR ONE CUSTOMER -->
+    {% if target %}
+    <table class="table table-hover">
+      <tr>
+        <th><b>Id</b></th>
+        <td>{{ target.tgt_id}}</td>
+      </tr>
+      <tr>
+        <th><b>Name</b></th>
+        <td>{{ target.tgt_name}}</td>
+      </tr>
+      <tr>
+        <th><b>X</b></th>
+        <td>{{ target.value_x }}</td>
+      </tr>
+      <tr>
+        <th><b>Y</b></th>
+        <td>{{ target.value_y }}</td>
+      </tr>
+      <tr>
+        <th><b>Z</b></th>
+        <td>{{ target.value_z }}</td>
+      </tr>
+      {% endif %}
+    </table>
+    <a href="/targets/{{ target.tgt_id }}/edit" class="btn btn-warning btn-xs">EDIT</a>
+    <a href="/targets/{{ target.tgt_id }}/delete" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete target {{ target.tgt_name }}?');" name="delButton">DELETE</a>
+  </div>
+</div>
+
+{% endblock %}

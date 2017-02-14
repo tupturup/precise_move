@@ -1,0 +1,6 @@
+$('#thetable').find('tr').click( function(){
+var row = $(this).find('td:first').text();
+var targ = event.target || event.srcElement;
+document.getElementById("comtext").value += targ.textContent || targ.innerText;
+
+});
