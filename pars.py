@@ -34,4 +34,5 @@ def parseString(s):
             return "error"
     return formulaData
 
-print parseString("gOto(X-23,4; y234.234; s345) goto(X234; Y563) goto(target.1; s100)")
+
+print parseString("gOto(X-23,4; y234.234; s345) goto(X234; Y563) goto(tgt1; s100)")

@@ -92,6 +92,7 @@ def show_target(tgt_id):
     target = session.query(Target).get(tgt_id)
     return render_template('show_target.html', target=target)
 
+
 @app.route("/targets/<int:tgt_id>/edit", methods=['GET', 'POST'])
 def edit_target(tgt_id):
     form = TargetForm(request.form)
@@ -127,8 +128,105 @@ def run_target(tgt_id):
     targets = session.query(Target).all()
     result = None
     target_db = session.query(Target).get(tgt_id)
+    ser = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=3)
+    #ser1.write('X1J'+ str(int(target_db.value_x)) +','+ str(int(target_db.value_y)) + ',' + str(int(target_db.value_z)) + '\r')
+    #ser1.write('X2J'+ str(int(target_db.value_x)) +','+ str(int(target_db.value_y)) + ',' + str(int(target_db.value_z)) + '\r')
+    #result = ser1.read(30)
+    #ser1.close()
 
-    result = run(target_db)
+    speed = '100'
+    countsX = None
+    countsY = None
+    countsZ = None
+    broadcast = 'X127T1,2\r'
+    okX = None
+    okY, result = None, None
+
+    if target_db.value_x:
+        countsX = 'X1T' + str(int(float(target_db.value_x)/1.25)) + ',1\r'
+    if target_db.value_y:
+        countsY = 'X2T' + str(int(float(target_db.value_y)/1.25)) + ',1\r'
+
+
+    ser.write(countsX)
+    ser.read(20)
+    ser.write('X1Y8,' + speed + '\r')
+    ser.read(20)
+    ser.write('X1U\r')
+    r = ser.read(10)
+    # checker = str(r)
+    #
+    # c = int('0x' + str(checker[6]), 16)
+    # d = int('0x' + str(checker[7]), 16)
+    #
+    # checkedC = hex(c & int('0x2', 16))
+    # checkedD = hex(d & int('0x4', 16))
+    #
+    # if checkedD == 0x4:
+    #     okX = '1'
+    # else:
+    #     if checkedC == 0x2:
+    #         okX = '0'
+    #     else:
+    #         okX = '1'
+    #
+    # if (okX == '1'):
+    ser.write(broadcast)
+    result = ser.read(30)
+
+
+
+    # if countsX != None:
+    #     ser.write(countsX)
+    #     ser.read(20)
+    #     ser.write('X1Y8,' + speed + '\r')
+    #     ser.read(20)
+    #     ser.write('X1U\r')
+    #     r = ser.read(10)
+    #     checker = str(r)
+    #
+    #     c = int('0x' + str(checker[6]), 16)
+    #     d = int('0x' + str(checker[7]), 16)
+    #
+    #     checkedC = hex(c & int('0x2', 16))
+    #     checkedD = hex(d & int('0x4', 16))
+    #
+    #     if checkedD == 0x4:
+    #         okX = '1'
+    #     else:
+    #         if checkedC == 0x2:
+    #             okX = '0'
+    #         else:
+    #             okX = '1'
+    #
+    # if countsY != None:
+    #     ser.write(countsY)
+    #     ser.read(20)
+    #     ser.write('X2Y8,' + speed + '\r')
+    #     ser.read(20)
+    #     ser.write('X2U\r')
+    #     r = ser.read(10)
+    #     checker = str(r)
+    #
+    #     c = int('0x' + str(checker[6]), 16)
+    #     d = int('0x' + str(checker[7]), 16)
+    #
+    #     checkedC = hex(c & int('0x2', 16))
+    #     checkedD = hex(d & int('0x4', 16))
+    #
+    #     if checkedD == 0x4:
+    #         okY = '1'
+    #     else:
+    #         if checkedC == 0x2:
+    #             okY = '0'
+    #         else:
+    #             okY = '1'
+    #
+    # if (okX == '1' or okY == '1'):
+    #     ser.write(broadcast)
+    #     result = ser.read(30)
+
+    ser.close()
 
     return render_template('index.html', result=result, targets=targets)
 
@@ -164,6 +262,7 @@ def dev_ide():
 @app.route("/dev_ide", methods=['POST'])
 def run_commands():
     targets = session.query(Target).all()
+
     comm = request.values['comm']
     speed = request.values['speed']
     if speed:
@@ -184,16 +283,27 @@ def run_commands():
         okX = None
         okY = None
         f = open('tekst.txt', 'a')
-        list = parseString(comm)
-        #l = len(parsed)
-        #pairs = l-1
-        #if parsed[0] == 'goto':
+
+        #p = clean(comm, targets)
+        p = parseString(comm)
+        for lista in p:
+            for target in targets:
+                ime = [i for i,x in enumerate(lista) if x == target.tgt_name]
+                if ime != []:
+                    i = ime[0]
+                    if target.value_x:
+                        lista[i] = 'X'
+                        lista.insert(i+1, target.value_x)
+                    if target.value_y:
+                        lista.append('Y')
+                        lista.append(target.value_y)
+                    if target.value_z:
+                        lista.append('Z')
+                        lista.append(target.value_z)
 
 
-        for parsed in list:
+        for parsed in p:
             l = len(parsed)
-
-            #pairs = l-1
             if parsed[0] == 'goto':
                 for i in range(1,len(parsed)-1):
                     if parsed[i] == 'S' or parsed[i] == 's':
@@ -282,8 +392,8 @@ def run_commands():
                 if (okX == '1' or okY == '1'):
                     ser.write(broadcast)
 
-                #else:
-                #    return "problem"
+                    #else:
+                    #    return "problem"
 
     else:
         return "error"

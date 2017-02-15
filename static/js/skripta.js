@@ -12,19 +12,19 @@ $(function() {
 
 //---------------------------------
 
-  var h = document.getElementsByTagName('h1');
-  var i;
-
-  $(h).click(function(){
-    //if(this.attr("name" == "delButton")){
-      $(this).parent().parent().hide(300);
-    //}
-  });
+  // var h = document.getElementsByTagName('h1');
+  // var i;
+  //
+  // $(h).click(function(){
+  //   //if(this.attr("name" == "delButton")){
+  //     $(this).parent().parent().hide(300);
+  //   //}
+  // });
 
 //----------------------------------
 
 
-  
+
 /*  document.body.onmousemove = function(e){
     e = e || window.event;
 

@@ -84,33 +84,36 @@ function loadFileAsText()
 
 
   $('#thetable').find('tr').click( function(){
-  var tname = $(this).find('td:first').text();
+  var tname = $(this).find('td').eq(0).text();
   var x = $(this).find('td').eq(1).text();
   var y = $(this).find('td').eq(2).text();
   var z = $(this).find('td').eq(3).text();
 
   document.getElementById("comtext").value += "goto(";
-  if (x){
-    document.getElementById("comtext").value += x;
-      if (y || z){
-      document.getElementById("comtext").value += "; ";
-    }  else {
-      document.getElementById("comtext").value += ")\n";
-    }
-  }
-
-  if (y){
-    document.getElementById("comtext").value += y;
-     if (z){
-      document.getElementById("comtext").value += "; ";
-    }  else{
-      document.getElementById("comtext").value += ")\n";
-    }
-  }
-
-  if (z){
-    document.getElementById("comtext").value += z + ")\n";
-  }
+  document.getElementById("comtext").value += tname;
+  document.getElementById("comtext").value += ")\n";
+  // document.getElementById("comtext").value += "goto(";
+  // if (x){
+  //   document.getElementById("comtext").value += x;
+  //     if (y || z){
+  //     document.getElementById("comtext").value += "; ";
+  //   }  else {
+  //     document.getElementById("comtext").value += ")\n";
+  //   }
+  // }
+  //
+  // if (y){
+  //   document.getElementById("comtext").value += y;
+  //    if (z){
+  //     document.getElementById("comtext").value += "; ";
+  //   }  else{
+  //     document.getElementById("comtext").value += ")\n";
+  //   }
+  // }
+  //
+  // if (z){
+  //   document.getElementById("comtext").value += z + ")\n";
+  // }
   });
 </script>
 
