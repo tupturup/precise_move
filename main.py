@@ -223,7 +223,7 @@ def search_results():
 @app.route( "/dev_ide", methods=['GET'])
 def dev_ide():
     targets = session.query(Target).all()
-    speed = '350'
+    speed = '300'
     return render_template('dev_ide.html', targets=targets, speed=speed)
 
 
@@ -233,10 +233,10 @@ def run_commands():
 
     comm = request.values['comm']
     speed = request.values['speed']
-    if speed:
-        speed = str(speed)
-    else:
-        speed = '300'
+    # if speed:
+    #     speed = str(speed)
+    # else:
+    #     speed = '300'
 
     if comm:
         ser = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=0.2  )
@@ -250,9 +250,9 @@ def run_commands():
         okToRun = None
         okX = None
         okY = None
+        hz = None
         f = open('tekst.txt', 'a')
 
-        #p = clean(comm, targets)
         p = parseString(comm)
         for lista in p:
             for target in targets:
@@ -275,32 +275,34 @@ def run_commands():
             if parsed[0] == 'goto':
                 for i in range(1,len(parsed)-1):
                     if parsed[i] == 'S' or parsed[i] == 's':
-                        speed = str(int(float(parsed[i+1])/5))
+                        hz = str(int(float(parsed[i+1])/5))
                     if parsed[i] == 'X' or parsed[i] == 'x':
                         countsX = 'X1T' + str(int(float(parsed[i+1])/1.25)) + ',1\r'
                     if parsed[i] == 'Y' or parsed[i] == 'y':
                         countsY = 'X2T' + str(int(float(parsed[i+1])/1.25)) + ',1\r'
-                    # if parsed[i] == 'Z' or parsed[i] == 'z':
-                    #     valueZ = float(parsed[i+1])
-                    #     countsZ = 'X3T' + str(int(valueZ/1.25)) + ',1\r'
-                    # if parsed[i] == 'A' or parsed[i] == 'a':
-                    #     valueA = float(parsed[i+1])
-                    #     countsA = 'X4T' + str(int(valueA/1.25)) + ',1\r'
-                    # if parsed[i] == 'B' or parsed[i] == 'b':
-                    #     valueB = float(parsed[i+1])
-                    #     countsB = 'X5T' + str(int(valueB/1.25)) + ',1\r'
-                    # if parsed[i] == 'C' or parsed[i] == 'c':
-                    #     valueC = float(parsed[i+1])
-                    #     countsC = 'X6T' + str(int(valueC/1.25)) + ',1\r'
+                    if parsed[i] == 'Z' or parsed[i] == 'z':
+                        valueZ = float(parsed[i+1])
+                        countsZ = 'X3T' + str(int(valueZ/1.25)) + ',1\r'
+                    if parsed[i] == 'A' or parsed[i] == 'a':
+                        valueA = float(parsed[i+1])
+                        countsA = 'X4T' + str(int(valueA/1.25)) + ',1\r'
+                    if parsed[i] == 'B' or parsed[i] == 'b':
+                        valueB = float(parsed[i+1])
+                        countsB = 'X5T' + str(int(valueB/1.25)) + ',1\r'
+                    if parsed[i] == 'C' or parsed[i] == 'c':
+                        valueC = float(parsed[i+1])
+                        countsC = 'X6T' + str(int(valueC/1.25)) + ',1\r'
 
                 if countsX != None:
                     f.write('X\n')
                     ser.write(countsX)
-                    ser.write('X1Y8,' + speed + '\r')
+                    if hz != None:
+                        ser.write('X1Y8,' + hz + '\r')
+                    else:
+                        ser.write('X1Y8,' + speed + '\r')
                     str3 = 'X1U\r'
                     ser.write(str3)
                     r = ser.readline()
-                    #return r
 
                     f.write(r)
                     checker = str(r[-3:])
@@ -319,12 +321,13 @@ def run_commands():
                         else:
                             okX = '1'
 
-
-                #    okX = canIrun(countsX, speed)
                 if countsY != None:
                     f.write('Y\n')
                     ser.write(countsY)
-                    ser.write('X2Y8,' + speed + '\r')
+                    if hz != None:
+                        ser.write('X2Y8,' + hz + '\r')
+                    else:
+                        ser.write('X2Y8,' + speed + '\r')
                     str3 = 'X2U\r'
                     ser.write(str3)
                     d = int('0x' + str(checker[1]), 16)
@@ -344,7 +347,7 @@ def run_commands():
                             okY = '0'
                         else:
                             okY = '1'
-                #while (okX or okY):
+
                 if (okX == '1' and okY == '1'):
                     ser.write(broadcast)
 
@@ -360,6 +363,6 @@ def run_commands():
 
 if __name__ == "__main__":
     #sleep(10)
-    sys.stdout.flush()
-    app.debug = True
+    #sys.stdout.flush()
+    #app.debug = True
     app.run()
