@@ -84,7 +84,7 @@ def add_numbers():
         else:
             error = "Fields are not filled correctly!"
 
-    return render_template('target_form.html', form=form, method="POST", action="/add", error=error, submit_text="Save")
+    return render_template('target_form.html', form=form, method="POST", action="/add", error=error, submit_text="Save", title="ADD NEW")
 
 
 @app.route("/targets/<int:tgt_id>", methods=['GET'])
@@ -96,6 +96,7 @@ def show_target(tgt_id):
 @app.route("/targets/<int:tgt_id>/edit", methods=['GET', 'POST'])
 def edit_target(tgt_id):
     form = TargetForm(request.form)
+    target = session.query(Target).get(tgt_id)
 
     if request.method == 'GET':
         form = TargetForm(request.form, session.query(Target).get(tgt_id))
@@ -112,7 +113,7 @@ def edit_target(tgt_id):
             return redirect(url_for('index'))
         else:
             error = "Fields are not filled correctly!"
-    return render_template('target_form.html', form=form, method="POST", action="/targets/%s/edit" % tgt_id, submit_text="Save changes")
+    return render_template('target_form.html', form=form, method="POST", action="/targets/%s/edit" % tgt_id, submit_text="Save changes", title="EDIT", target=target)
 
 
 @app.route("/targets/<int:tgt_id>/delete", methods=['GET'])
@@ -128,7 +129,7 @@ def run_target(tgt_id):
     targets = session.query(Target).all()
     result = None
     target_db = session.query(Target).get(tgt_id)
-    ser = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=3)
+    ser = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=0.1)
     #ser1.write('X1J'+ str(int(target_db.value_x)) +','+ str(int(target_db.value_y)) + ',' + str(int(target_db.value_z)) + '\r')
     #ser1.write('X2J'+ str(int(target_db.value_x)) +','+ str(int(target_db.value_y)) + ',' + str(int(target_db.value_z)) + '\r')
     #result = ser1.read(30)
@@ -147,84 +148,51 @@ def run_target(tgt_id):
     if target_db.value_y:
         countsY = 'X2T' + str(int(float(target_db.value_y)/1.25)) + ',1\r'
 
+    if countsX != None:
+        ser.write(countsX)
+        ser.write('X1Y8,' + speed + '\r')
+        ser.write('X1U\r')
+        r = ser.readline()
+        checker = str(r[-3:])
 
-    ser.write(countsX)
-    ser.read(20)
-    ser.write('X1Y8,' + speed + '\r')
-    ser.read(20)
-    ser.write('X1U\r')
-    r = ser.read(10)
-    # checker = str(r)
-    #
-    # c = int('0x' + str(checker[6]), 16)
-    # d = int('0x' + str(checker[7]), 16)
-    #
-    # checkedC = hex(c & int('0x2', 16))
-    # checkedD = hex(d & int('0x4', 16))
-    #
-    # if checkedD == 0x4:
-    #     okX = '1'
-    # else:
-    #     if checkedC == 0x2:
-    #         okX = '0'
-    #     else:
-    #         okX = '1'
-    #
-    # if (okX == '1'):
-    ser.write(broadcast)
-    result = ser.read(30)
+        c = int('0x' + str(checker[0]), 16)
+        d = int('0x' + str(checker[1]), 16)
 
+        checkedC = hex(c & int('0x2', 16))
+        checkedD = hex(d & int('0x4', 16))
 
+        if checkedD == 0x4:
+            okX = '1'
+        else:
+            if checkedC == 0x2:
+                okX = '0'
+            else:
+                okX = '1'
 
-    # if countsX != None:
-    #     ser.write(countsX)
-    #     ser.read(20)
-    #     ser.write('X1Y8,' + speed + '\r')
-    #     ser.read(20)
-    #     ser.write('X1U\r')
-    #     r = ser.read(10)
-    #     checker = str(r)
-    #
-    #     c = int('0x' + str(checker[6]), 16)
-    #     d = int('0x' + str(checker[7]), 16)
-    #
-    #     checkedC = hex(c & int('0x2', 16))
-    #     checkedD = hex(d & int('0x4', 16))
-    #
-    #     if checkedD == 0x4:
-    #         okX = '1'
-    #     else:
-    #         if checkedC == 0x2:
-    #             okX = '0'
-    #         else:
-    #             okX = '1'
-    #
-    # if countsY != None:
-    #     ser.write(countsY)
-    #     ser.read(20)
-    #     ser.write('X2Y8,' + speed + '\r')
-    #     ser.read(20)
-    #     ser.write('X2U\r')
-    #     r = ser.read(10)
-    #     checker = str(r)
-    #
-    #     c = int('0x' + str(checker[6]), 16)
-    #     d = int('0x' + str(checker[7]), 16)
-    #
-    #     checkedC = hex(c & int('0x2', 16))
-    #     checkedD = hex(d & int('0x4', 16))
-    #
-    #     if checkedD == 0x4:
-    #         okY = '1'
-    #     else:
-    #         if checkedC == 0x2:
-    #             okY = '0'
-    #         else:
-    #             okY = '1'
-    #
-    # if (okX == '1' or okY == '1'):
-    #     ser.write(broadcast)
-    #     result = ser.read(30)
+    if countsY != None:
+        ser.write(countsY)
+        ser.write('X2Y8,' + speed + '\r')
+        ser.write('X2U\r')
+        r = ser.readline()
+        checker = str(r[-3:])
+
+        c = int('0x' + str(checker[0]), 16)
+        d = int('0x' + str(checker[1]), 16)
+
+        checkedC = hex(c & int('0x2', 16))
+        checkedD = hex(d & int('0x4', 16))
+
+        if checkedD == 0x4:
+            okY = '1'
+        else:
+            if checkedC == 0x2:
+                okY = '0'
+            else:
+                okY = '1'
+
+    if (okX == '1' and okY == '1'):
+        ser.write(broadcast)
+        result = ser.read(15)
 
     ser.close()
 
@@ -271,7 +239,7 @@ def run_commands():
         speed = '300'
 
     if comm:
-        ser = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=3)
+        ser = serial.Serial(port='COM10', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=0.2  )
         countsA = None
         countsB = None
         countsC = None
@@ -328,24 +296,17 @@ def run_commands():
                 if countsX != None:
                     f.write('X\n')
                     ser.write(countsX)
-                    #bytesToRead = ser.inWaiting()
-                    f.write(ser.read(20))
                     ser.write('X1Y8,' + speed + '\r')
-                    #while True:
-                    #bytesToRead = ser.inWaiting()
-                    f.write(ser.read(20))
                     str3 = 'X1U\r'
                     ser.write(str3)
-                    #while True:
-                    #bytesToRead = ser.inWaiting()
-                    r = ser.read(10)
+                    r = ser.readline()
                     #return r
 
                     f.write(r)
-                    checker = str(r)
+                    checker = str(r[-3:])
 
-                    c = int('0x' + str(checker[6]), 16)
-                    d = int('0x' + str(checker[7]), 16)
+                    c = int('0x' + str(checker[0]), 16)
+                    d = int('0x' + str(checker[1]), 16)
 
                     checkedC = hex(c & int('0x2', 16))
                     checkedD = hex(d & int('0x4', 16))
@@ -363,20 +324,15 @@ def run_commands():
                 if countsY != None:
                     f.write('Y\n')
                     ser.write(countsY)
-                    #bytesToRead = ser.inWaiting()
-                    f.write(ser.read(20))
                     ser.write('X2Y8,' + speed + '\r')
-                    #bytesToRead = ser.inWaiting()
-                    f.write(ser.read(20))
                     str3 = 'X2U\r'
                     ser.write(str3)
-                    #bytesToRead = ser.inWaiting()
-                    r = ser.read(10)
+                    d = int('0x' + str(checker[1]), 16)
+                    r = ser.readline()
                     f.write(r)
-                    checker = str(r)
+                    checker = str(r[-3:])
 
-                    c = int('0x' + str(checker[6]), 16)
-                    d = int('0x' + str(checker[7]), 16)
+                    c = int('0x' + str(checker[0]), 16)
 
                     checkedC = hex(c & int('0x2', 16))
                     checkedD = hex(d & int('0x4', 16))
@@ -389,7 +345,7 @@ def run_commands():
                         else:
                             okY = '1'
                 #while (okX or okY):
-                if (okX == '1' or okY == '1'):
+                if (okX == '1' and okY == '1'):
                     ser.write(broadcast)
 
                     #else:

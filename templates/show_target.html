@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="col-xs-offset-2" style="margin-top: 30px;">
-  <div class="col-xs-offset-2 col-xs-4">
+<h3>DETAILS <b>{{ target.tgt_name}}</b></h3>
+
+<!--<div class="col-xs-offset-2" style="margin-top: 30px;">-->
+  <div class="col-xs-offset-3 col-xs-4">
     <!-- DATA FOR ONE CUSTOMER -->
     {% if target %}
     <table class="table table-hover">
@@ -28,9 +30,9 @@
       </tr>
       {% endif %}
     </table>
-    <a href="/targets/{{ target.tgt_id }}/edit" class="btn btn-warning btn-sm">EDIT</a>
-    <a href="/targets/{{ target.tgt_id }}/delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete target {{ target.tgt_name }}?');" name="delButton">DELETE</a>
-  </div>
+    <a href="/targets/{{ target.tgt_id }}/edit" class="btn btn-primary">EDIT</a>
+    <a href="/targets/{{ target.tgt_id }}/delete" class="btn" onclick="return confirm('Are you sure you want to delete target {{ target.tgt_name }}?');" name="delButton">DELETE</a>
+  <!--</div>-->
 </div>
 
 {% endblock %}

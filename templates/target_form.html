@@ -1,71 +1,84 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
 
-{% block content %}
-<div id="newone">
-  <div class="col-xs-offset-2" style="margin-top: 30px;">
-    <div id="target_table">
+<!--<div id="newone">
+<div class="col-xs-offset-2" style="margin-top: 30px;">
+<div id="target_table">-->
 
-      {% if error %}
-      <div class="col-xs-8">
-        <div class="alert alert-warning">
-          <span class="closebtn">&times;</span>
-          <strong>Error!</strong> {{ error }}
-        </div>
-      </div>
-      {% endif %}
+{% if error %}
+<!--<div class="col-xs-8">-->
+<div class="alert alert-warning">
+    <span class="closebtn">&times;</span>
+    <strong>Error!</strong> {{ error }}
+</div>
+<!--</div>-->
+{% endif %}
+<h3>{{ title }} <b>{% if target %}{{ target.tgt_name }}{% endif %}</b></h3>
+<div class="col-xs-offset-3 col-xs-8">
+    <form method="{{ method }}" action="{{ action }}" class="form-horizontal">
 
-      <div class="col-xs-offset-2 col-xs-11">
-        <form method="{{ method }}" action="{{ action }}" class="form-horizontal">
-
-          <div class="form-group">
+        <div class="form-group">
             <label class="control-label col-sm-1" for="tgt_name">{{ form.tgt_name.label }}</label>
             <div class="col-sm-3">{{ form.tgt_name(class_="input form-control", placeholder="Enter target name") }}</div>
 
             {% for message in form.tgt_name.errors %}
-            <div class="controls"><p><font color="red">{{ message }}</font></p></div>
+            <div class="controls">
+                <p>
+                    <font color="red">{{ message }}</font>
+                </p>
+            </div>
             {% endfor %}
-          </div>
+        </div>
 
-          <div class="form-group">
+        <div class="form-group">
             <label class="control-label col-sm-1" for="value_x">{{ form.value_x.label }}</label>
             <div class="col-sm-3">{{ form.value_x(class_="input form-control", placeholder="Axis X") }}</div>
 
             {% for message in form.value_x.errors %}
-            <div class="controls"><p><font color="red">{{ message }}</font></p></div>
+            <div class="controls">
+                <p>
+                    <font color="red">{{ message }}</font>
+                </p>
+            </div>
             {% endfor %}
-          </div>
+        </div>
 
-          <div class="form-group">
+        <div class="form-group">
             <label class="control-label col-sm-1" for="value_y">{{ form.value_y.label }}</label>
             <div class="col-sm-3"> {{ form.value_y(class_="input form-control", placeholder="Axis Y") }}</div>
 
             {% for message in form.value_y.errors %}
-            <div><p><font color="red">{{ message }}</font></p></div>
+            <div>
+                <p>
+                    <font color="red">{{ message }}</font>
+                </p>
+            </div>
             {% endfor %}
-          </div>
+        </div>
 
-          <div class="form-group">
+        <div class="form-group">
             <label class="control-label col-sm-1" for="value_z">{{ form.value_z.label }}</label>
             <div class="col-sm-3"> {{ form.value_z(class_="input form-control", placeholder="Axis Z") }}</div>
 
             {% for message in form.value_z.errors %}
-            <div><p><font color="red">{{ message }}</font></p></div>
-            {% endfor %}
-          </div>
-
-          <div class="control-group">
-            <div class="controls">
-              <button type="submit" class="btn" id="save_add">{% if submit_text %}{{ submit_text }}{% else %} Add {% endif %}</button>
-              <span><a class="btn btn-sm btn-default" href="/" role="button"> Cancel</a></span>
-
+            <div>
+                <p>
+                    <font color="red">{{ message }}</font>
+                </p>
             </div>
-          </div>
+            {% endfor %}
+        </div>
 
-        </form>
-      </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary" id="save_add">{% if submit_text %}{{ submit_text }}{% else %} Add {% endif %}</button>
+                <span><a class="btn" href="/" role="button"> Cancel</a></span>
+            </div>
+        </div>
 
-    </div>
-  </div>
+    </form>
+</div>
+<!--</div>
 </div>
 </div>
+</div>-->
 {% endblock %}

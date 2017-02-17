@@ -3,16 +3,14 @@
 
 {% include 'modalInputForm.html' %}
 
-<div class="col-xs-offset-2">
-
+<div class="col-xs-offset-2" style="margin-bottom:10pt;">
   <div id="add_search">
-    <div class="row">
       <form action="/search_results" class="form-search span12">
-        <a class="btn btn-link btn-lg" href="/add" style="width:150pt;" type="button" role="button" id="add_new_target"><span class="glyphicon glyphicon-plus">Add</span></a>
+        <a class="glyphicon glyphicon-plus" style="border:none; text-decoration: none; font-size: 18px; color:#535254; width:150px;" href="/add" role="button" id="add_new_target">Add</a>
+
         <input type="text" class="input-sm search-query " name="q" value="{% if q %}{{ q }}{% endif %}" autofocus>
-        <button type="submit" class="btn">Search</button>
+        <button type="submit" class="btn btn-default">Search</button>
       </form>
-    </div>
   </div>
 </div>
 
@@ -31,10 +29,11 @@
 </div>
 
 <div id="index_target">
-  <div class="container-fluid">
+  <!--<div class="container-fluid">
     <div class="row">
       <div class="col-xs-8 col-xs-offset-1">
-        <div class="target">
+        <div class="target">-->
+        <div class="col-xs-8 col-xs-offset-1">
           <table class="table table-hover" >
             <tr>
               <thead>
@@ -52,14 +51,14 @@
         </div>
 
         <!-- OUTPUT -->
-        <div class="container-fluid" id="returned_result">
+        <!--<div class="container-fluid" id="returned_result">
           <textarea class="form-control" name="result" id="result" rows="5" method="post">{% if result %}{{ result }}{% endif %}</textarea>
-        </div><!--col-sm-12 col-xs-12-->
+        </div>-->
 
-      </div><!--container-fluid-->
+      <!--</div>
     </div>
   </div>
-</div>
+</div>-->
 </div>
 <!-- SEND BUTTON -->
 <!--<div class="container-fluid text-center" style="margin: 15pt">

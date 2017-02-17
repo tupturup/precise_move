@@ -2,44 +2,40 @@
 {% block content %}
 
 <div>
-  <div id=listOfTgts style="width:100pt" class="col-xs-4">
-    <table class="table table-hover" id="thetable">
-      <tr>
-        <thead>
-          <b>Target</b>
-        </thead>
-        <div>
-          {% for target in targets %}
-          <tbody>
-            <div id="nameTargt">
-              <td>{{target.tgt_name}}</td>
-              <td style="display:none;">{% if target.value_x %}x{{target.value_x}}{% endif %}</td>
-              <td style="display:none;">{% if target.value_y %}y{{target.value_y}}{% endif %}</td>
-              <td style="display:none;">{% if target.value_z %}z{{target.value_z}}{% endif %}</td>
-            </div>
-          </tbody>
-          {% endfor %}
-        </div>
-      </tr>
-    </table>
-  </div>
+  <div class="row">
+    <div id=listOfTgts style="width:100pt" class="col-xs-4">
+      <table class="table table-hover" id="thetable">
+        <tr>
+          <thead>
+            <b>Target</b>
+          </thead>
+          <div>
+            {% for target in targets %}
+            <tbody>
+              <div id="nameTargt">
+                <td>{{target.tgt_name}}</td>
+              </div>
+            </tbody>
+            {% endfor %}
+          </div>
+        </tr>
+      </table>
+    </div>
 
-
-  <div id="command" class="col-xs-7">
-    <div class="row">
+    <div id="command" class="col-xs-7">
       <form action="/dev_ide" method="POST" class="form-search span12">
-        Default speed value: <input type="text" name="speed" value="{% if speed %}{{speed}}{% endif %}" placeholder="{{speed}}" >
-        <textarea id=comtext type=text name="comm" rows="20" cols="100" autofocus ></textarea>
-        <button type="submit" class="btn" id="startCom">Start</button>
+        Default speed <input type="text" name="speed" value="{% if speed %}{{speed}}{% endif %}" placeholder="{{speed}}" style="margin-bottom:5pt;">
+        <textarea id=comtext type=text name="comm" rows="17" cols="90" autofocus ></textarea>
+        <button type="submit" class="btn btn-primary" id="startCom">Execute</button>
       </form>
     </div>
-  </div>
-
-  <div col-xs-2>
+  <div>
     <input id="inputFileNameToSaveAs"></input>
     <button onclick="saveTextAsFile()">Save</button>
     <input type="file" id="fileToLoad">
     <button onclick="loadFileAsText()">Load</button>
+  </div>
+
   </div>
 </div>
 
@@ -48,46 +44,43 @@
 
 function saveTextAsFile()
 {
-    var textToSave = document.getElementById("comtext").value;
-    var textToSaveAsBlob = new Blob([textToSave], {type:"text/plain"});
-    var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
-    var fileNameToSaveAs = document.getElementById("inputFileNameToSaveAs").value;
+  var textToSave = document.getElementById("comtext").value;
+  var textToSaveAsBlob = new Blob([textToSave], {type:"text/plain"});
+  var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+  var fileNameToSaveAs = document.getElementById("inputFileNameToSaveAs").value;
 
-    var downloadLink = document.createElement("a");
-    downloadLink.download = fileNameToSaveAs;
-    downloadLink.innerHTML = "Download File";
-    downloadLink.href = textToSaveAsURL;
-    downloadLink.onclick = destroyClickedElement;
-    downloadLink.style.display = "none";
-    document.body.appendChild(downloadLink);
+  var downloadLink = document.createElement("a");
+  downloadLink.download = fileNameToSaveAs;
+  downloadLink.innerHTML = "Download File";
+  downloadLink.href = textToSaveAsURL;
+  downloadLink.onclick = destroyClickedElement;
+  downloadLink.style.display = "none";
+  document.body.appendChild(downloadLink);
 
-    downloadLink.click();
+  downloadLink.click();
 }
 
 function destroyClickedElement(event)
 {
-    document.body.removeChild(event.target);
+  document.body.removeChild(event.target);
 }
 
 function loadFileAsText()
 {
-    var fileToLoad = document.getElementById("fileToLoad").files[0];
+  var fileToLoad = document.getElementById("fileToLoad").files[0];
 
-    var fileReader = new FileReader();
-    fileReader.onload = function(fileLoadedEvent)
-    {
-        var textFromFileLoaded = fileLoadedEvent.target.result;
-        document.getElementById("comtext").value = textFromFileLoaded;
-    };
-    fileReader.readAsText(fileToLoad, "UTF-8");
+  var fileReader = new FileReader();
+  fileReader.onload = function(fileLoadedEvent)
+  {
+    var textFromFileLoaded = fileLoadedEvent.target.result;
+    document.getElementById("comtext").value = textFromFileLoaded;
+  };
+  fileReader.readAsText(fileToLoad, "UTF-8");
 }
 
 
-  $('#thetable').find('tr').click( function(){
+$('#thetable').find('tr').click( function(){
   var tname = $(this).find('td').eq(0).text();
-  var x = $(this).find('td').eq(1).text();
-  var y = $(this).find('td').eq(2).text();
-  var z = $(this).find('td').eq(3).text();
 
   document.getElementById("comtext").value += "goto(";
   document.getElementById("comtext").value += tname;
@@ -114,7 +107,7 @@ function loadFileAsText()
   // if (z){
   //   document.getElementById("comtext").value += z + ")\n";
   // }
-  });
+});
 </script>
 
 {% endblock %}

@@ -2,21 +2,20 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Precibeo</title>
 
   <!-- SCRIPTS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" async="async"></script>
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" async="async"></script>-->
   <script type="text/javascript" src="/static/js/jquery-1.9.0.js" async="async"></script>
   <script type="text/javascript" src="/static/js/jquery-3.1.1.js" async="async"></script>
   <script type="text/javascript" src="/static/js/script.js" async="async"></script>
   <script type="text/javascript" src="/static/js/skripta.js" async="async"></script>
   <script type="text/javascript" src="/static/js/skr.js" async="async"></script>
+  <link rel="stylesheet" type="text/css" href="/static/css/stile.css?version=4">
   <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js" async="async"></script>
   <script type="text/javascript">var $SCRIPT_ROOT = {{ request.script_root | tojson | safe }};</script>
   <!--<script type="text/javascript" src="/static/js/sijax/sijax.js"></script>-->
@@ -26,36 +25,49 @@
 </head>
 
 <body>
-  <!-- START OF THE DOCUMENT -->
-  <div class="container-fluid">
-    <div class="row" id="everything">
-      <div class="col-xs-2">
-        <a href="/">
-        <img src="/static/img/precibeo_logo.jpg" alt="PRECIBEO" width="250px">
-        </a>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a href="/" style="font-size:32px; " class="navbar-brand">PRECIBEO</a>
       </div>
-      <div class="col-xs-offset-3">
-        <!-- NAVIGATION BUTTONS -->
-        <div class="container-fluid" style="margin: 15pt" id="header">
-          <span><a class="btn btn-lg btn-default glyphicon glyphicon-th-list" style="border:none" href="/" role="button"> Targets</a></span>
-          <span><a class="btn btn-lg btn-default glyphicon glyphicon-console" style="border:none" href="/dev_ide" role="button"> Ide</a></span>
-          <span><a class="btn btn-lg btn-default glyphicon  glyphicon-cog" style="border:none" href="#" role="button"> Settings</a></span>
-          <span><a class="btn btn-lg btn-default glyphicon glyphicon-question-sign" style="border:none" href="#" role="button"> Help</a></span>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a class="glyphicon glyphicon-th-list" style="border:none; text-decoration: none; text-decoration: none;
+            font-size: 18px;" href="/" role="button">Targets</a></li>
+            <li><a class="glyphicon glyphicon-console" style="border:none; text-decoration: none; font-size: 18px;" href="/dev_ide" role="button">Ide</a></li>
+            <li><a class="glyphicon glyphicon-cog" style="border:none; text-decoration: none; font-size: 18px;" href="#" role="button">Settings</a></li>
+            <li><a class="glyphicon glyphicon-question-sign" style="border:none; text-decoration: none; font-size: 18px;" href="#" role="button">Help</a></li>
+          </ul>
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-xs-offset-1" style="margin-top: 35px;">
-        <div id=bodyy>
-          <div>
-            {% block content %}
-            {% endblock %}
-          </div>
-        </div>
+
+
+    <!--<div class="row">
+    <div class="col-xs-offset-1" style="margin-top: 35px;">
+    <div id=bodyy>
+    <div>-->
+    <div class="container body-content" style="margin-top: 80px;">
+      <div id=bodyy>
+        {% block content %}
+        {% endblock %}
       </div>
     </div>
+
+    <footer>
+      <p style="margin-left: 50px; ">&copy; @Precibeo AB - 2017 TM</p>
+    </footer>
+    <!--</div>
   </div>
 </div>
+</div>
+</div>
+</div>-->
 </body>
 </html>
